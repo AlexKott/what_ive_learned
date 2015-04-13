@@ -4,13 +4,15 @@
     Load and save functionality to be added.
 */
 
-var subjects = {
+var categories = {
     'Cooking': {
         color: 'abcdef',
-        'Vegan Recipes': {
-            color: 'eeffee'
+        subjects: {
+            'Vegan Recipes': {
+                color: 'eeffee'
+            }
         }
     }
 };
 
-module.exports = subjects;
+module.exports = categories;

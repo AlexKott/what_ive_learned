@@ -2,29 +2,28 @@ var assert = require('assert'),
     LearnEvent = require('../js/learn_event'),
     Category = require('../js/category'),
     Subject = require('../js/subject'),
-    subjects = require('../js/content/subjects'),
+    Router = require('../js/router'),
+    categories = require('../js/content/categories'),
     events = require('../js/content/events');
 
 describe('Category', function() {
-    it('should be possible to add a new category to the list', function() {
-        var newCat = new Category('Reading', {'color':'abcdef'});
-        subjects[newCat.title] = newCat.fields;
+    it('should have a method to add a new category to the list', function() {
+        Category.addNewCategory('Reading', {'color':'abcdef'});
 
-        assert.equal(subjects.Reading.color, 'abcdef');
+        assert.equal(categories.Reading.color, 'abcdef');
     });
 });
 
 describe('Subject', function() {
-    it('should be possible to add a new subject with some properties', function() {
-        var category = 'Cooking',
-            subject = 'Vegan Recipes',
-            newCat = new Category(category, {'color':'abcdef'}),
-            newSub = new Subject('Vegan Recipces', category, {'color':'fff000'});
+    it('should have a method to add new subjects', function() {
+        var category = 'Cookings',
+            subject = 'Vegetarian Recipes';
 
-        subjects[category] = newCat.fields;
-        subjects[category][subject] = newSub.fields;
+        Category.addNewCategory(category, {'color':'abcdef'});
 
-        assert.equal(subjects.Cooking['Vegan Recipes'].color, 'fff000');
+        Subject.addNewSubject(category, subject, {'color':'fff000'});
+
+        assert.equal(categories.Cookings.subjects['Vegetarian Recipes'].color, 'fff000');
 
     });
 });
@@ -70,7 +69,7 @@ describe('Learn Event', function() {
         assert.equal(events[cDate].primary.category, category);
     });
 
-    it('should be possible to delete an event from the list', function() {
+    it('should provide a deleting method for registered events', function() {
 
         new LearnEvent(2015314, 'primary', {category:'Cooking', subject:'Vegan Recipes', description:'c'});
         new LearnEvent(2015315, 'primary', {category:'Cooking', subject:'Vegan Recipes', description:'c'});

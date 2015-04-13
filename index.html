@@ -5,8 +5,28 @@
 <body>
 
     <div id="main">
-        asd
+        <a href="/#/home"><button>HOME</button></a>
+        <a href="/#/addEvent"><button>ADD A NEW EVENT</button></a>
     </div>
+
+    <section id="home" style="display:none">
+        This is home.
+    </section>
+
+    <section id="addEvent" style="display:none">
+        <form id="newEvent">
+            <input list="category" id="cat-select"><datalist id="category"></datalist>
+            <input list="subject" id="sub-select"><datalist id="subject"></datalist>
+        </form>
+    </section>
+
+    <section id="error" style="display:none">
+        Unknown error!
+    </section>
+
+    <section id="e404" style="display:none">
+        Site not found!
+    </section>
 
 <script src="bundle.js"></script>
 </body>

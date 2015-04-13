@@ -1,5 +1,5 @@
 var events = require('./content/events.js');
-var subjects = require('./content/subjects.js');
+var categories = require('./content/categories.js');
 
 var LearnEvent = function(date, type, fields) {
     if (fields === undefined) {
@@ -62,11 +62,11 @@ LearnEvent.prototype.checkFields = function(fieldData) {
         fieldData.isMilestone = false;
     }
 
-    if (subjects[fieldData.category] === undefined) {
+    if (categories[fieldData.category] === undefined) {
         throw new Error('This category does not exist yet!');
     }
 
-    if (subjects[fieldData.category][fieldData.subject] === undefined) {
+    if (categories[fieldData.category].subjects[fieldData.subject] === undefined) {
         throw new Error('This subject does not exist yet!');
     }
 

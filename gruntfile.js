@@ -48,7 +48,7 @@ module.exports = function(grunt) {
 
         webpack: {
             build: {
-                entry: "./js/main.js",
+                entry: "./js/index.js",
                 output: {
                     path: __dirname,
                     filename: "bundle.js"
