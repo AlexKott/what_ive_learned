@@ -39,24 +39,11 @@ module.exports = function(grunt) {
         watch: {
             js: {
                 files: 'js/**',
+                tasks: 'webpack',
                 options: {
                     livereload: true,
                 },
-            },
-            css: {
-                files: 'less/**',
-                tasks: 'less',
-                options: {
-                    livereload: true,
-                },
-            },
-            html: {
-                files: 'html/**',
-                tasks: ['copy:dev', 'rename:dev', 'replace'],
-                options: {
-                    livereload: true,
-                },
-            },
+            }
         },
 
         webpack: {
