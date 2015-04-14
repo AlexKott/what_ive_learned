@@ -38,7 +38,10 @@ var LearnEvent = function(date, type, fields) {
     }
 
     else {
-        events[date].secondary = this.fields;
+        if(events[date].secondary === undefined) {
+            events[date].secondary = [];
+        }
+        events[date].secondary.push(this.fields);
     }
 };
 
@@ -73,7 +76,7 @@ LearnEvent.prototype.checkFields = function(fieldData) {
         throw new Error('This subject does not exist yet!');
     }
 
-    if(fieldData.description === undefined) {
+    if(fieldData.description === undefined || fieldData.description === '') {
         throw new Error('Description for this event is missing!');
     }
 

@@ -1,25 +1,51 @@
-var categories = require('./content/categories.js'),
+var LearnEvent = require('./learn_event.js'),
+    categories = require('./content/categories.js'),
     events = require('./content/events.js');
 
 var newEvent = {
 
-    loadNewEventData: function() {
+    eIndex: 0,
+    learnDate: 0,
+    secondaryOnly: false,
 
-        var checkDate = this.checkDate,
-            dateSel = document.querySelector('#learndate'),
-            catList = document.querySelector('#category'),
-            subList = document.querySelector('#subject'),
-            date = new Date(),
-            option;
+    initNewEvent: function() {
 
+        var addSecEvent = this.addSecEvent,
+            changeSecondaryOnly = this.changeSecondaryOnly,
+            submitEvent = this.submitEvent;
 
-        var loadDate = function() {
-            dateSel.value = date.toISOString().substring(0,10);
-            dateSel.addEventListener('click', function() {checkDate.call(newEvent, dateSel);
+        this.loadCategories(this.eIndex);
+
+        this.loadDate(this.eIndex);
+
+        if (this.eIndex === 0) {
+
+            document.querySelector('#add-sec-event')
+                .addEventListener('click', function() {
+                    addSecEvent.call(newEvent);
+                }, false );
+
+            document.querySelector('#new-secondary-only')
+                .addEventListener('click', function() {
+                    changeSecondaryOnly.call(newEvent);
                 }, false);
 
-            checkDate.call(newEvent, dateSel);
-        };
+            document.querySelector('#submit-new-event')
+                .addEventListener('click', function() {
+                    submitEvent.call(newEvent);
+                }, false);
+        }
+    },
+
+    loadCategories: function(index) {
+        var catList = document.querySelectorAll('.new-category')[index],
+            subList = document.querySelectorAll('.new-subject')[index],
+            option;
+
+        // clear catList
+        while (catList.length > 0) {
+            catList.removeChild(catList.lastChild);
+        }
 
         var loadCatList = function() {
 
@@ -29,7 +55,11 @@ var newEvent = {
                 option.text = cat;
                 catList.appendChild(option);
             }
-            catList.addEventListener('click', function() { loadSubList(catList.value); }, false);
+            catList.addEventListener('click', function() {
+                    loadSubList(catList.value);
+                }, false);
+
+            loadSubList();
         };
 
         var loadSubList = function(cat) {
@@ -40,6 +70,7 @@ var newEvent = {
             }
 
             if(categories[cat] !== undefined) {
+                subList.className = subList.className.replace(' emptyList', '');
                 for (var sub in categories[cat].subjects) {
                     option = document.createElement("OPTION");
                     option.value = sub;
@@ -47,13 +78,33 @@ var newEvent = {
                     subList.appendChild(option);
                 }
             }
+            else {
+                subList.className = subList.className + ' emptyList';
+            }
+
         };
 
-        loadDate();
         loadCatList();
     },
 
+    loadDate: function(index) {
 
+        var checkDate = this.checkDate,
+            dateSel = document.querySelector('#new-learndate'),
+            date = new Date(),
+            option;
+
+        var loadDate = function() {
+            dateSel.value = date.toISOString().substring(0,10);
+            dateSel.addEventListener('click', function() {
+                    checkDate.call(newEvent, dateSel);
+                }, false);
+
+            checkDate.call(newEvent, dateSel);
+        };
+
+        loadDate();
+    },
 
     checkDate: function(dateSel) {
 
@@ -67,12 +118,90 @@ var newEvent = {
         }
 
         if (isDateOk) {
-            dateSel.className = dateSel.className.replace(' invalid', '');
+            this.learnDate = cDate;
+            dateSel.className = dateSel.className.replace(' warning', '');
         }
         else {
-            dateSel.className = dateSel.className + ' invalid';
+            this.learnDate = 0;
+            dateSel.className = dateSel.className + ' warning';
         }
     },
+
+    addSecEvent: function() {
+        var eventSection = document.querySelector('#add-event'),
+            eForm = document.querySelector('.new-event'),
+            newChild = eForm.cloneNode(true);
+
+        newChild.removeChild(newChild.querySelector('.new-milestone'));
+        newChild.querySelector('.new-description').value = '';
+
+        eventSection.appendChild(newChild);
+
+        this.eIndex++;
+
+        this.initNewEvent();
+    },
+
+    changeSecondaryOnly: function() {
+        var primEvent = document.querySelectorAll('.new-event')[0];
+
+        this.secondaryOnly = !this.secondaryOnly;
+
+        if (this.eIndex === 0) {
+            this.addSecEvent();
+        }
+
+        if (this.secondaryOnly) {
+            primEvent.className = primEvent.className + ' new-sec-only';
+        }
+        else {
+            primEvent.className = primEvent.className.replace(' new-sec-only', '');
+        }
+
+
+    },
+
+    submitEvent: function() {
+        // setup event for saving
+        var date, eventList, eventListLength, type, fields = {}, i;
+
+        if(this.learnDate === 0) {
+            alert('Missing or invalid date!');
+            return;
+        }
+        else {
+            date = this.learnDate;
+        }
+
+        eventList = document.querySelectorAll('.new-event');
+        eventListLength = eventList.length;
+
+        if (this.secondaryOnly) i = 1;
+        else i = 0;
+
+        for (i; i < eventListLength; i++) {
+            if (i === 0) {
+                type = 'primary';
+                fields.isMilestone = eventList[0].querySelector('.new-milestone').checked;
+            }
+            else {
+                type = 'secondary';
+                fields.isMilestone = false;
+            }
+            fields.category = eventList[i].querySelector('.new-category').value;
+            fields.subject = eventList[i].querySelector('.new-subject').value;
+            fields.description = eventList[i].querySelector('.new-description').value;
+
+            try {
+                new LearnEvent(date, type, fields);
+            }
+            catch(error) {
+                alert(error);
+            }
+        }
+
+
+    }
 };
 
 

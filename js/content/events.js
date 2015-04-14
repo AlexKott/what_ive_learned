@@ -19,7 +19,14 @@ var events = {
             category: 'Driving',
             subject: 'Boats',
             description: 'I am sailing....'
+        },
+        secondary: {
+            isMilestone: false,
+            category: 'Driving',
+            subject: 'Boats',
+            description: 'Water is wet...'
         }
+
     }
 };
 

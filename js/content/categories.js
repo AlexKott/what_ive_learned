@@ -11,7 +11,7 @@ var categories = {
             'Vegan Recipes': {
                 color: 'eeffee'
             },
-            'Potatoe Recipes': {
+            'Potato Recipes': {
                 color: 'ff8811'
             }
         }

@@ -14,15 +14,15 @@ var app = {
         loadPathData(newPath);
 
         window.addEventListener('hashchange', function() {
-            newPath = Router.getPath();
-            loadPathData.call(app, newPath);
-        }, false);
+                newPath = Router.getPath();
+                loadPathData.call(app, newPath);
+            }, false);
     },
 
     loadPathData: function(path) {
         switch(path) {
-            case 'addEvent':
-                newEvent.loadNewEventData();
+            case 'add-event':
+                newEvent.initNewEvent();
                 break;
             default:
                 return;

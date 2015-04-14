@@ -6,6 +6,21 @@
 .invalid {
     background: red;
 }
+.warning {
+    background: yellow;
+}
+.emptyList {
+    display: none;
+}
+.new-sec-only {
+    display: none;
+}
+#add-event>.new-event {
+    background: rgb(240,100,100);
+}
+#add-event>.new-event:first-of-type {
+    background: rgb(100,100,240);
+}
 
 </style>
 
@@ -14,18 +29,23 @@
 
     <div id="main">
         <a href="/#/home"><button>HOME</button></a>
-        <a href="/#/addEvent"><button>ADD A NEW EVENT</button></a>
+        <a href="/#/add-event"><button>ADD A NEW EVENT</button></a>
     </div>
 
     <section id="home" style="display:none">
         This is home.
     </section>
 
-    <section id="addEvent" style="display:none">
-        <form id="newEvent">
-            <input type="date" id="learndate">
-            <select id="category" size="5"></select>
-            <select id="subject" size="5"></select>
+    <section id="add-event" style="display:none">
+        <button id="add-sec-event">Add secondary event</button>
+        <input type="date" id="new-learndate">
+        <button id="submit-new-event">Submit learn event</button>
+        <label>Only add secondary events<input type="checkbox" id="new-secondary-only"></label>
+        <form class="new-event">
+            <select class="new-category" size="5"></select>
+            <select class="new-subject" size="5"></select>
+            <input type="text" class="new-description">
+            <input type="checkbox" class="new-milestone">
         </form>
     </section>
 
