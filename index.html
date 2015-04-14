@@ -30,6 +30,7 @@
     <div id="main">
         <a href="/#/home"><button>HOME</button></a>
         <a href="/#/add-event"><button>ADD A NEW EVENT</button></a>
+        <a href="/#/show-events"><button>SHOW EVENTS</button></a>
     </div>
 
     <section id="home" style="display:none">
@@ -49,6 +50,8 @@
         </form>
     </section>
 
+    <section id="show-events" style="display:none"></section>
+
     <section id="error" style="display:none">
         Unknown error!
     </section>
@@ -56,6 +59,17 @@
     <section id="e404" style="display:none">
         Site not found!
     </section>
+
+<!-- TEMPLATES -->
+<template id="event-template">
+    <div class="show-single-event">
+        <h3 class="show-date">123</h1>
+        <h4 class="show-category"></h4>
+        <h5 class="show-subject"></h5>
+        <span class="show-description"></span>
+    </div>
+</template>
+
 
 <script src="bundle.js"></script>
 </body>

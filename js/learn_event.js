@@ -16,11 +16,13 @@ var LearnEvent = function(date, type, fields) {
     }
 
     if(!date) {
-        var newDate = new Date(),
+        throw new Error('Date missing!');
+        /* var newDate = new Date(),
             year = newDate.getFullYear(),
             month = ('0' + (newDate.getMonth() + 1)).slice(-2),
             day = ('0' + newDate.getDate()).slice(-2);
             date = year.toString() + month + day;
+        */
     }
 
     this.date = date;
@@ -38,19 +40,19 @@ var LearnEvent = function(date, type, fields) {
     }
 
     else {
+        if(events[date].primary === undefined) {
+            var changeSec = confirm('You need a primary learn event to continue. Do you want to make the first of your secondary events a primary event?');
+
+            if (!changeSec) { return; }
+            else {
+                events[date].primary = this.fields;
+                return;
+            }
+        }
         if(events[date].secondary === undefined) {
             events[date].secondary = [];
         }
         events[date].secondary.push(this.fields);
-    }
-};
-
-LearnEvent.prototype.delete = function(date) {
-    if(events[date] === undefined) {
-        throw new Error('There is no event for the given date!');
-    }
-    else {
-        delete events[date];
     }
 };
 
@@ -81,6 +83,15 @@ LearnEvent.prototype.checkFields = function(fieldData) {
     }
 
     return fieldData;
+};
+
+LearnEvent.prototype.delete = function(date) {
+    if(events[date] === undefined) {
+        throw new Error('There is no event for the given date!');
+    }
+    else {
+        delete events[date];
+    }
 };
 
 module.exports = LearnEvent;

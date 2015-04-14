@@ -2,38 +2,42 @@ var LearnEvent = require('./learn_event.js'),
     categories = require('./content/categories.js'),
     events = require('./content/events.js');
 
-var newEvent = {
+var createEvent = {
 
     eIndex: 0,
     learnDate: 0,
     secondaryOnly: false,
+    initialised: false,
 
     initNewEvent: function() {
+        if (!this.initialised) {
 
-        var addSecEvent = this.addSecEvent,
-            changeSecondaryOnly = this.changeSecondaryOnly,
-            submitEvent = this.submitEvent;
+            var addSecEvent = this.addSecEvent,
+                changeSecondaryOnly = this.changeSecondaryOnly,
+                submitEvent = this.submitEvent;
 
-        this.loadCategories(this.eIndex);
+            this.loadCategories(this.eIndex);
 
-        this.loadDate(this.eIndex);
+            this.loadDate(this.eIndex);
 
-        if (this.eIndex === 0) {
+            if (this.eIndex === 0) {
 
-            document.querySelector('#add-sec-event')
-                .addEventListener('click', function() {
-                    addSecEvent.call(newEvent);
-                }, false );
+                document.querySelector('#add-sec-event')
+                    .addEventListener('click', function() {
+                        addSecEvent.call(createEvent);
+                    }, false );
 
-            document.querySelector('#new-secondary-only')
-                .addEventListener('click', function() {
-                    changeSecondaryOnly.call(newEvent);
-                }, false);
+                document.querySelector('#new-secondary-only')
+                    .addEventListener('click', function() {
+                        changeSecondaryOnly.call(createEvent);
+                    }, false);
 
-            document.querySelector('#submit-new-event')
-                .addEventListener('click', function() {
-                    submitEvent.call(newEvent);
-                }, false);
+                document.querySelector('#submit-new-event')
+                    .addEventListener('click', function() {
+                        submitEvent.call(createEvent);
+                    }, false);
+            }
+            this.initialised = true;
         }
     },
 
@@ -79,7 +83,7 @@ var newEvent = {
                 }
             }
             else {
-                subList.className = subList.className + ' emptyList';
+                subList.className += ' emptyList';
             }
 
         };
@@ -97,10 +101,10 @@ var newEvent = {
         var loadDate = function() {
             dateSel.value = date.toISOString().substring(0,10);
             dateSel.addEventListener('click', function() {
-                    checkDate.call(newEvent, dateSel);
+                    checkDate.call(createEvent, dateSel);
                 }, false);
 
-            checkDate.call(newEvent, dateSel);
+            checkDate.call(createEvent, dateSel);
         };
 
         loadDate();
@@ -123,7 +127,7 @@ var newEvent = {
         }
         else {
             this.learnDate = 0;
-            dateSel.className = dateSel.className + ' warning';
+            dateSel.className += ' warning';
         }
     },
 
@@ -152,7 +156,7 @@ var newEvent = {
         }
 
         if (this.secondaryOnly) {
-            primEvent.className = primEvent.className + ' new-sec-only';
+            primEvent.className += ' new-sec-only';
         }
         else {
             primEvent.className = primEvent.className.replace(' new-sec-only', '');
@@ -192,7 +196,6 @@ var newEvent = {
 
             try {
                 new LearnEvent(date, type, fields);
-                console.log(events);
             }
             catch(error) {
                 alert(error);
@@ -204,4 +207,4 @@ var newEvent = {
 };
 
 
-module.exports = newEvent;
+module.exports = createEvent;

@@ -3,6 +3,8 @@ var assert = require('assert'),
     Category = require('../js/category'),
     Subject = require('../js/subject'),
     Router = require('../js/router'),
+    createEvent = require('../js/create_event'),
+    showEvents = require('../js/show_events'),
     categories = require('../js/content/categories'),
     events = require('../js/content/events');
 
@@ -28,7 +30,7 @@ describe('Subject', function() {
     });
 });
 
-describe('Learn Event', function() {
+describe('LearnEvent', function() {
 
     before(function(done) {
         LearnEvent.prototype.clear = function() {

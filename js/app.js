@@ -1,5 +1,6 @@
 var Router = require('./router.js'),
-    newEvent = require('./newevent.js');
+    createEvent = require('./create_event.js'),
+    showEvents = require('./show_events.js');
 
 
 var app = {
@@ -22,7 +23,10 @@ var app = {
     loadPathData: function(path) {
         switch(path) {
             case 'add-event':
-                newEvent.initNewEvent();
+                createEvent.initNewEvent();
+                break;
+            case 'show-events':
+                showEvents.initialise();
                 break;
             default:
                 return;

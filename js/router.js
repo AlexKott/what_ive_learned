@@ -5,6 +5,7 @@ var Router = {
     list: {
         'home':true,
         'add-event':true,
+        'show-events': true,
         'error':true,
         'e404':true
 
