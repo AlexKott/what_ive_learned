@@ -56,7 +56,7 @@ var newEvent = {
                 catList.appendChild(option);
             }
             catList.addEventListener('click', function() {
-                    loadSubList(catList.value);
+                    loadSubList(catList.options[catList.selectedIndex].value);
                 }, false);
 
             loadSubList();
@@ -165,13 +165,7 @@ var newEvent = {
         // setup event for saving
         var date, eventList, eventListLength, type, fields = {}, i;
 
-        if(this.learnDate === 0) {
-            alert('Missing or invalid date!');
-            return;
-        }
-        else {
-            date = this.learnDate;
-        }
+        date = this.learnDate;
 
         eventList = document.querySelectorAll('.new-event');
         eventListLength = eventList.length;
@@ -188,12 +182,17 @@ var newEvent = {
                 type = 'secondary';
                 fields.isMilestone = false;
             }
-            fields.category = eventList[i].querySelector('.new-category').value;
-            fields.subject = eventList[i].querySelector('.new-subject').value;
+            fields.category = eventList[i].querySelector('.new-category')
+                .options[eventList[i].querySelector('.new-category').selectedIndex]
+                .value;
+            fields.subject = eventList[i].querySelector('.new-subject')
+                .options[eventList[i].querySelector('.new-subject').selectedIndex]
+                .value;
             fields.description = eventList[i].querySelector('.new-description').value;
 
             try {
                 new LearnEvent(date, type, fields);
+                console.log(events);
             }
             catch(error) {
                 alert(error);
