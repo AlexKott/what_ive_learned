@@ -16,8 +16,11 @@ var LearnEvent = function(date, type, fields) {
     }
 
     if(!date) {
-        var newDate = new Date();
-        date = newDate.getFullYear().toString().concat(newDate.getMonth(), newDate.getDate());
+        var newDate = new Date(),
+            year = newDate.getFullYear(),
+            month = ('0' + (newDate.getMonth() + 1)).slice(-2),
+            day = ('0' + newDate.getDate()).slice(-2);
+            date = year.toString() + month + day;
     }
 
     this.date = date;

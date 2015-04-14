@@ -46,8 +46,11 @@ describe('Learn Event', function() {
 
     it('should set the event date the actual date', function() {
         var newEvent = new LearnEvent(null, 'primary', {category:'Cooking', subject:'Vegan Recipes', description:'c'}),
-            date = new Date(),
-            currentDate = date.getFullYear() + '' + date.getMonth() + '' + date.getDate();
+            newDate = new Date(),
+            year = newDate.getFullYear(),
+            month = ('0' + (newDate.getMonth() + 1)).slice(-2),
+            day = ('0' + newDate.getDate()).slice(-2);
+            currentDate = year.toString() + month + day;
 
         assert.equal(newEvent.date, currentDate);
     });
@@ -59,29 +62,28 @@ describe('Learn Event', function() {
     });
 
     it('should take a date as identifier and add itself to saved events', function() {
-        var date = new Date(),
-            cDate = date.getFullYear().toString().concat(date.getMonth(), date.getDate()),
+        var cDate = 20140510,
             category = 'Cooking',
             subject = 'Vegan Recipes',
             fields = {'isMilestone':false, 'category':category, 'subject':subject, 'description':'I finally learned cooking vegan'},
-            newEvent = new LearnEvent(null, 'primary', fields);
+            newEvent = new LearnEvent(cDate, 'primary', fields);
 
         assert.equal(events[cDate].primary.category, category);
     });
 
     it('should provide a deleting method for registered events', function() {
 
-        new LearnEvent(2015314, 'primary', {category:'Cooking', subject:'Vegan Recipes', description:'c'});
-        new LearnEvent(2015315, 'primary', {category:'Cooking', subject:'Vegan Recipes', description:'c'});
+        new LearnEvent(20150414, 'primary', {category:'Cooking', subject:'Vegan Recipes', description:'c'});
+        new LearnEvent(20150415, 'primary', {category:'Cooking', subject:'Vegan Recipes', description:'c'});
 
-        LearnEvent.prototype.delete(2015314);
+        LearnEvent.prototype.delete(20150414);
 
         testDelete = function() {
-            LearnEvent.prototype.delete(2015312);
+            LearnEvent.prototype.delete(20150412);
         };
 
-        assert.equal(events[2015314], undefined);
-        assert.equal(events[2015315].primary.category, 'Cooking');
+        assert.equal(events[20150414], undefined);
+        assert.equal(events[20150415].primary.category, 'Cooking');
 
         assert.throws(testDelete, Error, 'NOT POSSIBLE TO DELETE EVENT');
     });

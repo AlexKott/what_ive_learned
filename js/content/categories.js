@@ -10,6 +10,20 @@ var categories = {
         subjects: {
             'Vegan Recipes': {
                 color: 'eeffee'
+            },
+            'Potatoe Recipes': {
+                color: 'ff8811'
+            }
+        }
+    },
+    'Driving': {
+        color: 'ff00ff',
+        subjects: {
+            'Cars': {
+                color: '445566'
+            },
+            'Boats': {
+                color: '0000FF'
             }
         }
     }

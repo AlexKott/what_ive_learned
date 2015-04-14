@@ -5,12 +5,20 @@
 */
 
 var events = {
-    2014310: {
+    20140410: {
         primary: {
             isMilestone: true,
             category: 'Cooking',
             subject: 'Vegan Recipes',
             description: 'I learned to cook flowers'
+        }
+    },
+    20150413: {
+        primary: {
+            isMilestone: false,
+            category: 'Driving',
+            subject: 'Boats',
+            description: 'I am sailing....'
         }
     }
 };
