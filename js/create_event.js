@@ -1,168 +1,18 @@
-var LearnEvent = require('./learn_event.js'),
-    categories = require('./content/categories.js'),
-    events = require('./content/events.js');
+var learnEvent = require('./learn_event.js'),
+    category = require('./category.js'),
+    view = require('./view.js');
 
 var createEvent = {
 
-    eIndex: 0,
-    learnDate: 0,
-    secondaryOnly: false,
-    initialised: false,
-
-    initNewEvent: function() {
-        if (!this.initialised) {
-
-            var addSecEvent = this.addSecEvent,
-                changeSecondaryOnly = this.changeSecondaryOnly,
-                submitEvent = this.submitEvent;
-
-            this.loadCategories(this.eIndex);
-
-            this.loadDate(this.eIndex);
-
-            if (this.eIndex === 0) {
-
-                document.querySelector('#add-sec-event')
-                    .addEventListener('click', function() {
-                        addSecEvent.call(createEvent);
-                    }, false );
-
-                document.querySelector('#new-secondary-only')
-                    .addEventListener('click', function() {
-                        changeSecondaryOnly.call(createEvent);
-                    }, false);
-
-                document.querySelector('#submit-new-event')
-                    .addEventListener('click', function() {
-                        submitEvent.call(createEvent);
-                    }, false);
-            }
-            this.initialised = true;
-        }
+    newEvent: {
+        date: 0,
+        type: 'primary',
+        fields: {}
     },
 
-    loadCategories: function(index) {
-        var catList = document.querySelectorAll('.new-category')[index],
-            subList = document.querySelectorAll('.new-subject')[index],
-            option;
-
-        // clear catList
-        while (catList.length > 0) {
-            catList.removeChild(catList.lastChild);
-        }
-
-        var loadCatList = function() {
-
-            for (var cat in categories) {
-                option = document.createElement("OPTION");
-                option.value = cat;
-                option.text = cat;
-                catList.appendChild(option);
-            }
-            catList.addEventListener('click', function() {
-                    loadSubList(catList.options[catList.selectedIndex].value);
-                }, false);
-
-            loadSubList();
-        };
-
-        var loadSubList = function(cat) {
-
-            // clear subList
-            while(subList.length > 0) {
-                subList.removeChild(subList.lastChild);
-            }
-
-            if(categories[cat] !== undefined) {
-                subList.className = subList.className.replace(' emptyList', '');
-                for (var sub in categories[cat].subjects) {
-                    option = document.createElement("OPTION");
-                    option.value = sub;
-                    option.text = sub;
-                    subList.appendChild(option);
-                }
-            }
-            else {
-                subList.className += ' emptyList';
-            }
-
-        };
-
-        loadCatList();
-    },
-
-    loadDate: function(index) {
-
-        var checkDate = this.checkDate,
-            dateSel = document.querySelector('#new-learndate'),
-            date = new Date(),
-            option;
-
-        var loadDate = function() {
-            dateSel.value = date.toISOString().substring(0,10);
-            dateSel.addEventListener('click', function() {
-                    checkDate.call(createEvent, dateSel);
-                }, false);
-
-            checkDate.call(createEvent, dateSel);
-        };
-
-        loadDate();
-    },
-
-    checkDate: function(dateSel) {
-
-        var cDate = dateSel.value.replace(/-/g, ''),
-            isDateOk = true;
-
-        for (var learnDate in events) {
-            if (learnDate === cDate) {
-                isDateOk = false;
-            }
-        }
-
-        if (isDateOk) {
-            this.learnDate = cDate;
-            dateSel.className = dateSel.className.replace(' warning', '');
-        }
-        else {
-            this.learnDate = 0;
-            dateSel.className += ' warning';
-        }
-    },
-
-    addSecEvent: function() {
-        var eventSection = document.querySelector('#add-event'),
-            eForm = document.querySelector('.new-event'),
-            newChild = eForm.cloneNode(true);
-
-        newChild.removeChild(newChild.querySelector('.new-milestone'));
-        newChild.querySelector('.new-description').value = '';
-
-        eventSection.appendChild(newChild);
-
-        this.eIndex++;
-
-        this.initNewEvent();
-    },
-
-    changeSecondaryOnly: function() {
-        var primEvent = document.querySelectorAll('.new-event')[0];
-
-        this.secondaryOnly = !this.secondaryOnly;
-
-        if (this.eIndex === 0) {
-            this.addSecEvent();
-        }
-
-        if (this.secondaryOnly) {
-            primEvent.className += ' new-sec-only';
-        }
-        else {
-            primEvent.className = primEvent.className.replace(' new-sec-only', '');
-        }
-
-
+    getDate: function() {
+        this.newEvent.date = learnEvent.prototype.transformDate(new Date());
+        return this.newEvent.date;
     },
 
     submitEvent: function() {

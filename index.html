@@ -1,75 +1,27 @@
+<!DOCTYPE html>
 <html>
 <head>
 <title>What I've Learned</title>
-
-<style>
-.invalid {
-    background: red;
-}
-.warning {
-    background: yellow;
-}
-.emptyList {
-    display: none;
-}
-.new-sec-only {
-    display: none;
-}
-#add-event>.new-event {
-    background: rgb(240,100,100);
-}
-#add-event>.new-event:first-of-type {
-    background: rgb(100,100,240);
-}
-
-</style>
-
 </head>
 <body>
 
-    <div id="main">
-        <a href="/#/home"><button>HOME</button></a>
-        <a href="/#/add-event"><button>ADD A NEW EVENT</button></a>
-        <a href="/#/show-events"><button>SHOW EVENTS</button></a>
-    </div>
+<div id="main"></div>
 
-    <section id="home" style="display:none">
-        This is home.
-    </section>
-
-    <section id="add-event" style="display:none">
-        <button id="add-sec-event">Add secondary event</button>
-        <input type="date" id="new-learndate">
-        <button id="submit-new-event">Submit learn event</button>
-        <label>Only add secondary events<input type="checkbox" id="new-secondary-only"></label>
-        <form class="new-event">
-            <select class="new-category" size="5"></select>
-            <select class="new-subject" size="5"></select>
-            <input type="text" class="new-description">
-            <input type="checkbox" class="new-milestone">
-        </form>
-    </section>
-
-    <section id="show-events" style="display:none"></section>
-
-    <section id="error" style="display:none">
-        Unknown error!
-    </section>
-
-    <section id="e404" style="display:none">
-        Site not found!
-    </section>
-
-<!-- TEMPLATES -->
-<template id="event-template">
-    <div class="show-single-event">
-        <h3 class="show-date">123</h1>
-        <h4 class="show-category"></h4>
-        <h5 class="show-subject"></h5>
-        <span class="show-description"></span>
+<template id="home-tpl">
+    <div id="home" class="container">
+        <button type="button" id="home-new">Create new Learn Event for today</button><br>
+        <button type="button" id="home-show">Show Learn Events</button>
     </div>
 </template>
 
+<template id="new-event-tpl">
+    <div class="container">
+        <span id="new-date"></span>
+        <ul id="new-cat-list">
+            
+        </ul>
+    </div>
+</template>
 
 <script src="bundle.js"></script>
 </body>

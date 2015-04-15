@@ -1,6 +1,6 @@
 var categories = require('./content/categories.js');
 
-var Category = {
+var category = {
 
     addNewCategory: function(title, fields) {
 
@@ -10,8 +10,18 @@ var Category = {
 
         categories[title] = fields;
         categories[title].subjects = {};
+    },
+
+    getCatList: function() {
+        var cats = [];
+
+        for (var cat in categories) {
+            cats.push(cat);
+        }
+
+        return cats;
     }
 
 };
 
-module.exports = Category;
+module.exports = category;

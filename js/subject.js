@@ -1,6 +1,6 @@
 var categories = require('./content/categories.js');
 
-var Subject = {
+var subject = {
     addNewSubject: function(category, subject, fields) {
         if(categories[category] === undefined) {
             throw new Error('Category does not exist!');
@@ -11,7 +11,17 @@ var Subject = {
         else {
             categories[category].subjects[subject] = fields;
         }
+    },
+
+    getSubList: function(category) {
+        var subs = [];
+
+        for (var sub in categories[category].subjects) {
+            subs.push(sub);
+        }
+
+        return subs;
     }
 };
 
-module.exports = Subject;
+module.exports = subject;

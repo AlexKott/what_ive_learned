@@ -1,7 +1,7 @@
 var events = require('./content/events.js');
 var categories = require('./content/categories.js');
 
-var LearnEvent = function(date, type, fields) {
+var learnEvent = function(date, type, fields) {
     if (fields === undefined) {
         throw new Error('No valid event data submitted!');
     }
@@ -17,12 +17,6 @@ var LearnEvent = function(date, type, fields) {
 
     if(!date) {
         throw new Error('Date missing!');
-        /* var newDate = new Date(),
-            year = newDate.getFullYear(),
-            month = ('0' + (newDate.getMonth() + 1)).slice(-2),
-            day = ('0' + newDate.getDate()).slice(-2);
-            date = year.toString() + month + day;
-        */
     }
 
     this.date = date;
@@ -56,7 +50,7 @@ var LearnEvent = function(date, type, fields) {
     }
 };
 
-LearnEvent.prototype.checkFields = function(fieldData) {
+learnEvent.prototype.checkFields = function(fieldData) {
 
     // checking fieldData for invalid input
 
@@ -85,7 +79,7 @@ LearnEvent.prototype.checkFields = function(fieldData) {
     return fieldData;
 };
 
-LearnEvent.prototype.delete = function(date) {
+learnEvent.prototype.delete = function(date) {
     if(events[date] === undefined) {
         throw new Error('There is no event for the given date!');
     }
@@ -94,4 +88,19 @@ LearnEvent.prototype.delete = function(date) {
     }
 };
 
-module.exports = LearnEvent;
+learnEvent.prototype.transformDate = function(date) {
+    if (Object.prototype.toString.call(date) === '[object Date]') {
+        var year = date.getFullYear().toString(),
+            month = ('0' + (date.getMonth() + 1)).slice(-2),
+            day = ('0' + date.getDate()).slice(-2);
+            newDate = year + month + day;
+    }
+
+    else {
+        console.log('transforming to Date');
+    }
+
+    return newDate;
+};
+
+module.exports = learnEvent;
