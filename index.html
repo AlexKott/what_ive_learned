@@ -2,6 +2,14 @@
 <html>
 <head>
 <title>What I've Learned</title>
+
+<!-- DEV ONLY! -->
+<style>
+.active {
+    background-color: #dd2222;
+}
+</style>
+<!-- /DEV ONLY! -->
 </head>
 <body>
 
@@ -15,12 +23,31 @@
 </template>
 
 <template id="new-event-tpl">
-    <div class="container">
+    <button id="home-button">HOME</button>
+    <div id="new-event" class="container">
         <span id="new-date"></span>
-        <ul id="new-cat-list">
-            
-        </ul>
+        <ul id="new-cat-list"></ul>
+        <span id="add-cat" style="display:none"><b>Add a new Category</b></span> <!-- DEV ONLY! -->
+        <ul id="new-sub-list"></ul>
+        <span id="add-sub" style="display:none"><b>Add a new Subject</b></span> <!-- DEV ONLY! -->
+        <div id="new-description" style="display:none">
+            <br><br>Description: <input type="text">
+        </div>
+        <button id="submit-new-event" style="display:none">ADD EVENT</button>
     </div>
+</template>
+
+<template id="show-events-tpl">
+    <button id="home-button">HOME</button>
+    <div id="show-events" class="container">
+    </div>
+</template>
+
+<template id="show-single-event-tpl">
+    <h4 class="show-date"></h4>
+    <span class="show-description"></span>
+    <h6 class="show-category"></h6>
+    <h6 class="show-subject"></h6><br>
 </template>
 
 <script src="bundle.js"></script>

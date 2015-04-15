@@ -1,4 +1,4 @@
-var learnEvent = require('./learn_event.js'),
+var LearnEvent = require('./learn_event.js'),
     category = require('./category.js'),
     view = require('./view.js');
 
@@ -6,53 +6,33 @@ var createEvent = {
 
     newEvent: {
         date: 0,
-        type: 'primary',
-        fields: {}
+        type: 'primary'
     },
 
     getDate: function() {
-        this.newEvent.date = learnEvent.prototype.transformDate(new Date());
+        this.newEvent.date = LearnEvent.prototype.transformDate(new Date());
         return this.newEvent.date;
     },
 
     submitEvent: function() {
-        // setup event for saving
-        var date, eventList, eventListLength, type, fields = {}, i;
+        var date, type, fields = {};
 
-        date = this.learnDate;
+        date = this.newEvent.date;
+        type = this.newEvent.type;
 
-        eventList = document.querySelectorAll('.new-event');
-        eventListLength = eventList.length;
+        fields.category = document.querySelector('#new-cat-list>li.active').innerText;
+        fields.subject = document.querySelector('#new-sub-list>li.active').innerText;
+        fields.description = document.querySelector('#new-description>input[type="text"]').value;
 
-        if (this.secondaryOnly) i = 1;
-        else i = 0;
 
-        for (i; i < eventListLength; i++) {
-            if (i === 0) {
-                type = 'primary';
-                fields.isMilestone = eventList[0].querySelector('.new-milestone').checked;
-            }
-            else {
-                type = 'secondary';
-                fields.isMilestone = false;
-            }
-            fields.category = eventList[i].querySelector('.new-category')
-                .options[eventList[i].querySelector('.new-category').selectedIndex]
-                .value;
-            fields.subject = eventList[i].querySelector('.new-subject')
-                .options[eventList[i].querySelector('.new-subject').selectedIndex]
-                .value;
-            fields.description = eventList[i].querySelector('.new-description').value;
-
-            try {
-                new LearnEvent(date, type, fields);
-            }
-            catch(error) {
-                alert(error);
-            }
+        try {
+            new LearnEvent(date, type, fields);
+            return true;
         }
-
-
+        catch(error) {
+            alert(error);
+            return false;
+        }
     }
 };
 

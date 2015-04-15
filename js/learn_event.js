@@ -53,7 +53,6 @@ var learnEvent = function(date, type, fields) {
 learnEvent.prototype.checkFields = function(fieldData) {
 
     // checking fieldData for invalid input
-
     if (fieldData.category === undefined ||
         fieldData.subject === undefined ||
         fieldData.description === undefined) {
