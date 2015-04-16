@@ -18,4 +18,6 @@ var app = {
 
 };
 
-module.exports = app;
+window.onload = function() {
+  app.initialise();
+};

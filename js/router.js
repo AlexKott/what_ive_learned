@@ -1,9 +1,11 @@
-var CreateEvent = require('./create-event.js');
+var CreateEvent = require('./create-event.js'),
+    ShowEvent = require('./show-events.js');
 
 var Router = function() {
   var self = this,
       hash;
 
+  // TODO With ES6 this will become a new Set()
   this.pages = {
     'new-event':true,
     'show-events':true
@@ -13,15 +15,20 @@ var Router = function() {
     var pages = document.querySelectorAll('.page'),
         pagesLength = pages.length;
 
-    // TODO check if an instance of CreateEvent exists and
-    //      confirm changing page!
-
     switch (path) {
       case 'new-event':
-        new CreateEvent();
+        if (this.currentView) { this.currentView.resetData(); }
+        this.currentView = new CreateEvent();
         break;
       case 'show-events':
+        if (this.currentView) { this.currentView.resetData(); }
+        this.currentView = new ShowEvent();
         break;
+      default:
+        if (this.currentView) {
+          this.currentView.resetData();
+          delete this.currentView;
+        }
     }
 
 

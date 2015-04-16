@@ -5,29 +5,28 @@
 */
 
 var events = {
-    20140410: {
-        primary: {
-            isMilestone: true,
-            category: 'Cooking',
-            subject: 'Vegan Recipes',
-            description: 'I learned to cook flowers'
-        }
-    },
-    20150413: {
-        primary: {
-            isMilestone: false,
-            category: 'Driving',
-            subject: 'Boats',
-            description: 'I am sailing....'
-        },
-        secondary: {
-            isMilestone: false,
-            category: 'Driving',
-            subject: 'Boats',
-            description: 'Water is wet...'
-        }
-
+  20140410: [
+    {
+      isMilestone: true,
+      category: 'Cooking',
+      subject: 'Vegan Recipes',
+      description: 'I learned to cook flowers'
     }
+  ],
+  20150413: [
+    {
+      isMilestone: false,
+      category: 'Driving',
+      subject: 'Boats',
+      description: 'I am sailing....'
+    },
+    {
+      isMilestone: false,
+      category: 'Driving',
+      subject: 'Boats',
+      description: 'Water is wet...'
+      }
+  ]
 };
 
 module.exports = events;

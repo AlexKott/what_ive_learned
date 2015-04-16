@@ -4,16 +4,12 @@ var LearnEvent = require('./learn-event.js'),
 
 var CreateEvent = function() {
 
-  this.data =  {
-    today: 0,
-    category: '',
-    subject: '',
-    description: '',
-    type: 'primary'
-  };
+  this.data =  {};
 
   this.setToday = function() {
     this.data.today = LearnEvent.prototype.transformDate(new Date());
+
+    document.querySelector('#new-date').innerText = this.data.today;
   };
 
   this.setupListener = function() {
@@ -38,6 +34,18 @@ var CreateEvent = function() {
       .addEventListener('click', function() {
         self.submitEvent();
       }, false);
+
+  };
+
+  this.removeListener = function() {
+    var eList = ['new-cat-list', 'new-sub-list', 'new-description', 'new-submit'],
+        oldE, newE;
+
+    eList.forEach(function(v) {
+      oldE = document.getElementById(v);
+      newE = oldE.cloneNode(true);
+      oldE.parentNode.replaceChild(newE, oldE);
+    });
 
   };
 
@@ -113,15 +121,15 @@ var CreateEvent = function() {
 
   this.submitEvent = function() {
     var date = this.data.today,
-        type = this.data.type,
         fields = {
           category: this.data.category,
           subject: this.data.subject,
-          description: this.data.description
+          description: this.data.description,
+          isMilestone: document.querySelector('#new-milestone').checked
         };
 
     try {
-      new LearnEvent(date, type, fields);
+      new LearnEvent(date, fields);
       alert('success!');
     }
     catch(error) {
@@ -129,9 +137,22 @@ var CreateEvent = function() {
     }
   };
 
-    this.setToday();
-    this.setupListener();
-    this.loadCats();
+  this.setToday();
+  this.setupListener();
+  this.loadCats();
+};
+
+CreateEvent.prototype.resetData = function() {
+  this.data = {};
+  this.resetActive('new-event');
+  this.removeListener();
+
+  document.querySelector('#new-description>input[type="text"]').value = '';
+  document.querySelector('#new-milestone').checked = false;
+  document.querySelector('#new-description').style.display = 'none';
+  document.querySelector('#new-submit').style.display = 'none';
+  document.querySelector('#new-sub-list').innerHTML = '';
+
 };
 
 
