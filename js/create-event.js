@@ -6,6 +6,9 @@ var CreateEvent = function() {
 
   this.data =  {
     today: 0,
+    category: '',
+    subject: '',
+    description: '',
     type: 'primary'
   };
 
@@ -55,6 +58,7 @@ var CreateEvent = function() {
 
       this.resetActive('new-event');
       target.className += ' active';
+      this.data.category = target.innerText;
 
       this.fillDOMList(subList, subDOMList);
     }
@@ -65,6 +69,7 @@ var CreateEvent = function() {
 
       this.resetActive('new-sub-list');
       target.className += ' active';
+      this.data.subject = target.innerText;
 
       document.querySelector('#new-description').style.display = 'block';
       document.querySelector('#new-submit').style.display = 'block';
@@ -98,6 +103,7 @@ var CreateEvent = function() {
   this.changedDescr = function(target) {
     if(target.value !== null && target.value.trim() !== '') {
       document.querySelector('#new-submit').disabled = false;
+      this.data.description = target.value;
     }
     else {
       document.querySelector('#new-submit').disabled = true;
@@ -105,26 +111,23 @@ var CreateEvent = function() {
   };
 
 
-    submitEvent = function() {
-        var date, type, fields = {};
+  this.submitEvent = function() {
+    var date = this.data.today,
+        type = this.data.type,
+        fields = {
+          category: this.data.category,
+          subject: this.data.subject,
+          description: this.data.description
+        };
 
-        date = this.newEvent.date;
-        type = this.newEvent.type;
-
-        fields.category = document.querySelector('#new-cat-list>li.active').innerText;
-        fields.subject = document.querySelector('#new-sub-list>li.active').innerText;
-        fields.description = document.querySelector('#new-description>input[type="text"]').value;
-
-
-        try {
-            new LearnEvent(date, type, fields);
-            return true;
-        }
-        catch(error) {
-            alert(error);
-            return false;
-        }
-    };
+    try {
+      new LearnEvent(date, type, fields);
+      alert('success!');
+    }
+    catch(error) {
+      alert(error);
+    }
+  };
 
     this.setToday();
     this.setupListener();
