@@ -1,16 +1,21 @@
-var view = require('./view.js');
+var Router = require('./router.js');
 
 var app = {
-    initialise: function() {
-        // TODO Check in user cache for an event for today
-        //      and show a specific button for that.
+  initialise: function() {
+    /*
+      Loads user cache and categories.json.
+      Initalises the Router.
+    */
 
-        // TODO Load categories from server. They are needed
-        //      for any operation.
+    // TODO Check in user cache for an event for today
+    //      and show a specific button for that.
 
-        view.loadHome();
+    // TODO Load categories from server. They are needed
+    //      for any operation.
 
-    },
+    new Router();
+  }
+
 };
 
 module.exports = app;

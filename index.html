@@ -6,7 +6,7 @@
 <!-- DEV ONLY! -->
 <style>
 .active {
-    background-color: #dd2222;
+  background-color: #dd2222;
 }
 </style>
 <!-- /DEV ONLY! -->
@@ -15,39 +15,33 @@
 
 <div id="main"></div>
 
-<template id="home-tpl">
-    <div id="home" class="container">
-        <button type="button" id="home-new">Create new Learn Event for today</button><br>
-        <button type="button" id="home-show">Show Learn Events</button>
-    </div>
-</template>
+<div id="home" class="page container">
+  <a href="#new-event"><button type="button" id="home-new">Create new Learn Event for today</button></a><br>
+  <a href="#show-events"><button type="button" id="home-show">Show Learn Events</button></a>
+</div>
 
-<template id="new-event-tpl">
-    <button id="home-button">HOME</button>
-    <div id="new-event" class="container">
-        <span id="new-date"></span>
-        <ul id="new-cat-list"></ul>
-        <span id="add-cat" style="display:none"><b>Add a new Category</b></span> <!-- DEV ONLY! -->
-        <ul id="new-sub-list"></ul>
-        <span id="add-sub" style="display:none"><b>Add a new Subject</b></span> <!-- DEV ONLY! -->
-        <div id="new-description" style="display:none">
-            <br><br>Description: <input type="text">
-        </div>
-        <button id="submit-new-event" style="display:none">ADD EVENT</button>
-    </div>
-</template>
+<div id="new-event" class="page container" style="display:none">
+  <a href="#"><button id="home-button">HOME</button></a>
+  <span id="new-date"></span>
+  <ul id="new-cat-list"></ul>
+  <span id="add-cat" style="display:none"><b>Add a new Category</b></span> <!-- DEV ONLY! -->
+  <ul id="new-sub-list"></ul>
+  <span id="add-sub" style="display:none"><b>Add a new Subject</b></span> <!-- DEV ONLY! -->
+  <div id="new-description" style="display:none">
+    <br><br>Description: <input type="text">
+  </div>
+  <button id="new-submit" disabled="true" style="display:none">ADD EVENT</button>
+</div>
 
-<template id="show-events-tpl">
-    <button id="home-button">HOME</button>
-    <div id="show-events" class="container">
-    </div>
-</template>
+<div id="show-events" class="page container" style="display:none">
+  <a href="#"><button id="home-button">HOME</button></a>
+</div>
 
 <template id="show-single-event-tpl">
-    <h4 class="show-date"></h4>
-    <span class="show-description"></span>
-    <h6 class="show-category"></h6>
-    <h6 class="show-subject"></h6><br>
+  <h4 class="show-date"></h4>
+  <span class="show-description"></span>
+  <h6 class="show-category"></h6>
+  <h6 class="show-subject"></h6><br>
 </template>
 
 <script src="bundle.js"></script>
