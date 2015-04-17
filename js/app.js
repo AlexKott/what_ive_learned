@@ -15,7 +15,7 @@ var app = {
 
     new Router();
   }
-
+  
 };
 
 window.onload = function() {

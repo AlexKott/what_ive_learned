@@ -20,13 +20,27 @@
   <a href="#show-events"><button type="button" id="home-show">Show Learn Events</button></a>
 </div>
 
+<!-- DEV ONLY -->
 <div id="new-event" class="page container" style="display:none">
   <a href="#"><button id="home-button">HOME</button></a><br><br>
-  <span id="new-date"></span>
+  <span id="new-date"></span><br><br>
+
+  <span id="add-cat"><b>+++ Add a new Category</b></span> <!-- DEV ONLY! -->
+  <div id="new-cat" style="display:none">
+    Name: <input type="text" id="new-cat-name"><br>
+    Color: <input type="text" id="new-cat-color"><br>
+    <button id="new-cat-submit">Add</button>
+  </div>
   <ul id="new-cat-list"></ul>
-  <span id="add-cat" style="display:none"><b>Add a new Category</b></span> <!-- DEV ONLY! -->
+
+  <span id="add-sub" style="display:none"><b>+++ Add a new Subject</b></span> <!-- DEV ONLY! -->
+  <div id="new-sub" style="display:none">
+    Name: <input type="text" id="new-sub-name"><br>
+    Color: <input type="text" id="new-sub-color"><br>
+    <button id="new-sub-submit">Add</button>
+  </div>
   <ul id="new-sub-list"></ul>
-  <span id="add-sub" style="display:none"><b>Add a new Subject</b></span> <!-- DEV ONLY! -->
+
   <div id="new-description" style="display:none">
     <br><br>Description: <input type="text">
   <span>Milestone </span><input type="checkbox" id="new-milestone">
