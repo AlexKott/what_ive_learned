@@ -120,6 +120,9 @@ var CreateEvent = function() {
 
         subject.addNewSubject(self.data.category, name, {'color':color});
         self.updateSubs(null, self.data.category);
+        self.data.subject = name;
+
+        uiQuery.showElem(['#new-description', '#new-submit']);
 
         uiQuery.hideElem('#new-sub');
 
@@ -130,9 +133,10 @@ var CreateEvent = function() {
 
   this.updateSubs =  function(target, directCat) {
     var subList, newSub,
-        subDOMList = document.querySelector('#new-sub-list');
+        subDOMList = document.querySelector('#new-sub-list'),
+        isValidTarget = (target && target.tagName === 'LI' && target.className.indexOf('active') === -1);
 
-    if (target && target.tagName === 'LI' && target.className.indexOf('active') === -1) {
+    if (isValidTarget) {
 
       subList = subject.getSubList(target.innerText);
 
@@ -143,14 +147,11 @@ var CreateEvent = function() {
       uiQuery.showElem('#add-sub');
     }
 
-    else if (directCat) {
-      subList = subject.getSubList(directCat);
-    }
-      this.fillDOMList(subList, subDOMList);
+    else if (directCat) { subList = subject.getSubList(directCat); }
 
-    if (directCat) {
-      subDOMList.lastChild.className += ' active';
-    }
+    if (isValidTarget || directCat) { this.fillDOMList(subList, subDOMList); }
+
+    if (directCat) { subDOMList.lastChild.className += ' active'; }
 
   };
 
@@ -208,6 +209,7 @@ var CreateEvent = function() {
   this.setToday();
   this.setupListeners();
   this.loadCats();
+
 };
 
 CreateEvent.prototype.resetData = function() {

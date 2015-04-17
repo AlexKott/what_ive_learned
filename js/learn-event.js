@@ -27,13 +27,13 @@ LearnEvent.prototype.checkFields = function(fieldData) {
     throw new Error('Description for this event is missing!');
   }
   if (!fieldData.category || !fieldData.subject) {
-    throw new Error('Event data is not complete!');
+    throw new Error('Event data is not complete! \nCategory: ' + fieldData.category + '\nSubject: ' + fieldData.subject);
   }
   if (!categories[fieldData.category]) {
-    throw new Error('This category does not exist yet!');
+    throw new Error('This category does not exist yet: ' + fieldData.category);
   }
   if (!categories[fieldData.category].subjects[fieldData.subject]) {
-    throw new Error('This subject does not exist yet!');
+    throw new Error('This subject does not exist yet: ' + fieldData.subject);
   }
   if (!fieldData.isMilestone) { fieldData.isMilestone = false; }
 
