@@ -29,10 +29,15 @@ var ShowEvent = function() {
   };
 
   this.presentEventList = function(eDate) {
-    var evList = [],
-        oneEv;
+    var self = this,
+        evList = [],
+        oneEv, catColor, subColor;
     this.events[eDate].forEach(function(ev) {
+      catColor = self.categories[ev.category].color.toColor();
+      subColor = self.categories[ev.category].subjects[ev.subject].color.toColor();
       oneEv = document.createElement('LI');
+      oneEv.style.border = '3px solid rgb(' + catColor.r + ',' + catColor.g + ',' + catColor.b + ')';
+      oneEv.style.backgroundColor = 'rgb(' + subColor.r + ',' + subColor.g + ',' + subColor.b + ')';
       oneEv.innerText = 'In: ' + ev.category + ', ' + ev.subject + ': ' + ev.description;
 
       evList.push(oneEv);

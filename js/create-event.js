@@ -1,9 +1,17 @@
 var uiQuery = require('./ui-query.js'),
+    ColorPicker = require('./color-picker.js'),
     LearnEvent = require('./learn-event.js'),
     category = require('./category.js'),
     subject = require('./subject.js');
 
 var CreateEvent = function() {
+
+  /*
+    Since I will be using the ColorPicker two times,
+    it needs to get configured.
+  */
+  ColorPicker.prototype.configColors(false, ['rgb(120,130,140)', '#99eeff']);
+  ColorPicker.prototype.configSize(2, 30);
 
   this.data =  {};
   this.clickListeners = [];
@@ -19,25 +27,21 @@ var CreateEvent = function() {
         evList = this.clickListeners;
 
     document.querySelector('#add-cat')
-      .addEventListener('click', function() {
-        self.addCategory();
-      }, false);
+      .addEventListener(uiQuery.clickAction, this.addCategory.bind(this));
     evList.push('add-cat');
 
     document.querySelector('#add-sub')
-      .addEventListener('click', function() {
-        self.addSubject();
-      }, false);
+      .addEventListener(uiQuery.clickAction, this.addSubject.bind(this));
     evList.push('add-sub');
 
     document.querySelector('#new-cat-list')
-      .addEventListener('click', function(e) {
+      .addEventListener(uiQuery.clickAction, function(e) {
         self.updateSubs(e.target);
       }, false);
     evList.push('new-cat-list');
 
     document.querySelector('#new-sub-list')
-      .addEventListener('click', function(e) {
+      .addEventListener(uiQuery.clickAction, function(e) {
         self.selectedSub(e.target);
       }, false);
     evList.push('new-sub-list');
@@ -49,9 +53,7 @@ var CreateEvent = function() {
     evList.push('new-description');
 
     document.querySelector('#new-submit')
-      .addEventListener('click', function() {
-        self.submitEvent();
-      }, false);
+      .addEventListener(uiQuery.clickAction, this.submitEvent.bind(this));
     evList.push('new-submit');
 
   };
@@ -92,11 +94,15 @@ var CreateEvent = function() {
   this.addCategory = function() {
     var self = this;
     uiQuery.showElem('#new-cat');
-    document.querySelector('#new-cat-submit')
-      .addEventListener('click', function() {
-        var name = document.querySelector('#new-cat-name').value,
-            color = document.querySelector('#new-cat-color').value;
 
+    if (!this.catColorPicker) {
+      this.catColorPicker = new ColorPicker(document.querySelector('#new-cat-color'));
+    }
+
+    document.querySelector('#new-cat-submit')
+      .addEventListener(uiQuery.clickAction, function() {
+        var name = document.querySelector('#new-cat-name').value,
+            color = ColorPicker.prototype.getColorString(self.catColorPicker.currentColor);
         category.addNewCategory(name, {'color':color});
         self.loadCats();
 
@@ -113,10 +119,15 @@ var CreateEvent = function() {
   this.addSubject = function() {
     var self = this;
     uiQuery.showElem('#new-sub');
+
+    if (!this.subColorPicker) {
+      this.subColorPicker = new ColorPicker(document.querySelector('#new-sub-color'));
+    }
+
     document.querySelector('#new-sub-submit')
-      .addEventListener('click', function() {
+      .addEventListener(uiQuery.clickAction, function() {
         var name = document.querySelector('#new-sub-name').value,
-            color = document.querySelector('#new-sub-color').value;
+            color = ColorPicker.prototype.getColorString(self.subColorPicker.currentColor);
 
         subject.addNewSubject(self.data.category, name, {'color':color});
         self.updateSubs(null, self.data.category);

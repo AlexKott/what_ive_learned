@@ -6,24 +6,24 @@
 
 var categories = {
     'Cooking': {
-        color: 'abcdef',
+        color: 'rgb(120,200,100)',
         subjects: {
             'Vegan Recipes': {
-                color: 'eeffee'
+                color: 'rgb(10,210,180)'
             },
             'Potato Recipes': {
-                color: 'ff8811'
+                color: 'rgb(20,250,50)'
             }
         }
     },
     'Driving': {
-        color: 'ff00ff',
+        color: 'rgb(120,200,100)',
         subjects: {
             'Cars': {
-                color: '445566'
+                color: 'rgb(120,200,100)'
             },
             'Boats': {
-                color: '0000FF'
+                color: 'rgb(120,200,100)'
             }
         }
     }

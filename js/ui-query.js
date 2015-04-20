@@ -1,6 +1,20 @@
 var uiQuery = {
   /*
+    Check if device has a touch event
+  */
+  checkTouch: function() {
+    if ('ontouchstart' in document.documentElement) {
+      this.clickAction = 'touch';
+    }
+    else {
+      this.clickAction = 'click';
+    }
+  },
+
+
+  /*
     Visibility and value, effects to add
+    TODO: add effects
   */
   hideElem: function(e) {
     if (typeof e === 'string') {

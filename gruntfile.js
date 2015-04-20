@@ -43,6 +43,13 @@ module.exports = function(grunt) {
                 options: {
                     livereload: true,
                 },
+            },
+            less: {
+                files: 'less/**',
+                tasks: ['less', 'webpack'],
+                options: {
+                    livereload: true,
+                }
             }
         },
 
@@ -52,6 +59,14 @@ module.exports = function(grunt) {
                 output: {
                     path: __dirname,
                     filename: "bundle.js"
+                },
+                module: {
+                    loaders: [
+                        {
+                            test: /\.css$/,
+                            loader: "style!css"
+                        }
+                    ]
                 }
             }
         }

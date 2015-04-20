@@ -1,4 +1,6 @@
-var Router = require('./router.js');
+require('../style.css');
+var Router = require('./router.js'),
+    uiQuery = require('./ui-query.js');
 
 var app = {
   initialise: function() {
@@ -15,9 +17,10 @@ var app = {
 
     new Router();
   }
-  
+
 };
 
 window.onload = function() {
+  uiQuery.checkTouch();
   app.initialise();
 };
