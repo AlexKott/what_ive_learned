@@ -10,7 +10,7 @@ var CreateEvent = function() {
     Since I will be using the ColorPicker two times,
     it needs to get configured.
   */
-  ColorPicker.prototype.configColors(false, ['rgb(120,130,140)', '#99eeff']);
+  ColorPicker.prototype.configColors(false, ['rgb(120,130,140)', '#99eeff', 'rgb(180,200,50)', 'rgb(10,210,180)']);
   ColorPicker.prototype.configSize(2, 30);
 
   this.data =  {};
@@ -92,54 +92,127 @@ var CreateEvent = function() {
   };
 
   this.addCategory = function() {
-    var self = this;
+    var self = this,
+        catList = LearnEvent.prototype.getCategories(),
+        colorBlackList = [],
+        createListener = true,
+        hideNewCat = function(e) {
+          if (e.target.id !== 'new-cat' &&
+              e.target.parentNode.id !== 'new-cat' &&
+              e.target.id !== 'add-cat' &&
+              e.target.className.indexOf('colorpicker-field') === -1) {
+            uiQuery.hideElem('#new-cat');
+            if (this.catColorPicker) {
+              this.catColorPicker.hideColorPicker();
+            }
+            document.removeEventListener(uiQuery.clickAction, hideNewCat);
+          }
+        };
+
     uiQuery.showElem('#new-cat');
+
+    document.addEventListener(uiQuery.clickAction, hideNewCat);
 
     if (!this.catColorPicker) {
       this.catColorPicker = new ColorPicker(document.querySelector('#new-cat-color'));
     }
 
-    document.querySelector('#new-cat-submit')
-      .addEventListener(uiQuery.clickAction, function() {
-        var name = document.querySelector('#new-cat-name').value,
-            color = ColorPicker.prototype.getColorString(self.catColorPicker.currentColor);
-        category.addNewCategory(name, {'color':color});
-        self.loadCats();
+    for (var cat in catList) {
+      colorBlackList.push(catList[cat].color);
+    }
+    this.catColorPicker.removeColors(colorBlackList);
+    this.catColorPicker.createElement();
 
-        self.updateSubs(document.querySelector('#new-cat-list').lastChild);
+    this.clickListeners.forEach(function(listener) {
+      if(listener === 'new-cat-submit') { createListener = false; }
+    });
 
-        uiQuery.hideElem('#new-cat');
+    if(createListener) {
+      document.querySelector('#new-cat-submit')
+        .addEventListener(uiQuery.clickAction, function() {
+          var name = document.querySelector('#new-cat-name').value,
+              color = ColorPicker.prototype.getColorString(self.catColorPicker.currentColor);
+          category.addNewCategory(name, {'color':color});
+          self.catColorPicker.removeColors([color]);
+          self.catColorPicker.createElement();
+          self.catColorPicker.resetColor();
 
-      }, false);
+          self.loadCats();
 
-    this.clickListeners.push('new-cat-submit');
+          self.updateSubs(document.querySelector('#new-cat-list').lastChild);
+
+          document.querySelector('#new-cat-name').value = '';
+
+          uiQuery.hideElem('#new-cat');
+
+          document.removeEventListener(hideNewCat);
+
+        }, false);
+
+      this.clickListeners.push('new-cat-submit');
+    }
 
   };
 
   this.addSubject = function() {
-    var self = this;
+    var self = this,
+        catList = LearnEvent.prototype.getCategories(),
+        colorBlackList = [],
+        createListener = true;
+        hideNewSub = function(e) {
+          if (e.target.id !== 'new-sub' &&
+              e.target.parentNode.id !== 'new-sub' &&
+              e.target.id !== 'add-sub' &&
+              e.target.className.indexOf('colorpicker-field') === -1) {
+            uiQuery.hideElem('#new-sub');
+            if (this.subColorPicker) {
+              this.subColorPicker.hideColorPicker();
+            }
+            document.removeEventListener(uiQuery.clickAction, hideNewSub);
+          }
+        };
+
     uiQuery.showElem('#new-sub');
+
+    document.addEventListener(uiQuery.clickAction, hideNewSub);
 
     if (!this.subColorPicker) {
       this.subColorPicker = new ColorPicker(document.querySelector('#new-sub-color'));
     }
 
-    document.querySelector('#new-sub-submit')
-      .addEventListener(uiQuery.clickAction, function() {
-        var name = document.querySelector('#new-sub-name').value,
-            color = ColorPicker.prototype.getColorString(self.subColorPicker.currentColor);
+    for (var sub in catList[self.data.category].subjects) {
+      colorBlackList.push(catList[self.data.category].subjects[sub].color);
+    }
+    this.subColorPicker.removeColors(colorBlackList);
+    this.subColorPicker.createElement();
 
-        subject.addNewSubject(self.data.category, name, {'color':color});
-        self.updateSubs(null, self.data.category);
-        self.data.subject = name;
+    this.clickListeners.forEach(function(listener) {
+      if(listener === 'new-sub-submit') { createListener = false; }
+    });
 
-        uiQuery.showElem(['#new-description', '#new-submit']);
+    if (createListener) {
+      document.querySelector('#new-sub-submit')
+        .addEventListener(uiQuery.clickAction, function() {
+          var name = document.querySelector('#new-sub-name').value,
+              color = ColorPicker.prototype.getColorString(self.subColorPicker.currentColor);
 
-        uiQuery.hideElem('#new-sub');
+          subject.addNewSubject(self.data.category, name, {'color':color});
+          self.subColorPicker.removeColors([color]);
+          self.subColorPicker.createElement();
+          self.subColorPicker.resetColor();
+          self.updateSubs(null, self.data.category);
+          self.data.subject = name;
 
-      }, false);
+          uiQuery.showElem(['#new-description', '#new-submit']);
 
-    this.clickListeners.push('new-sub-submit');
+          document.querySelector('#new-sub-name').value = '';
+
+          uiQuery.hideElem('#new-sub');
+
+        }, false);
+
+      this.clickListeners.push('new-sub-submit');
+    }
   };
 
   this.updateSubs =  function(target, directCat) {

@@ -6,7 +6,7 @@
 
 var categories = {
     'Cooking': {
-        color: 'rgb(120,200,100)',
+        color: 'rgb(180,200,50)',
         subjects: {
             'Vegan Recipes': {
                 color: 'rgb(10,210,180)'
