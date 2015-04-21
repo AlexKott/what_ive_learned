@@ -1,5 +1,5 @@
 var CreateEvent = require('./create-event.js'),
-    ShowEvent = require('./show-events.js');
+    ViewEvent = require('./view-events.js');
 
 var Router = function() {
   var self = this,
@@ -8,7 +8,7 @@ var Router = function() {
   // TODO With ES6 this will become a new Set()
   this.pages = {
     'new-event':true,
-    'show-events':true
+    'view-events':true
   };
 
   this.loadView = function(path) {
@@ -20,9 +20,9 @@ var Router = function() {
         if (this.currentView) { this.currentView.resetData(); }
         this.currentView = new CreateEvent();
         break;
-      case 'show-events':
+      case 'view-events':
         if (this.currentView) { this.currentView.resetData(); }
-        this.currentView = new ShowEvent();
+        this.currentView = new ViewEvent();
         break;
       default:
         if (this.currentView) {

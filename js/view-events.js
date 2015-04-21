@@ -3,7 +3,7 @@ var uiQuery = require('./ui-query.js'),
     category = require('./category.js'),
     subject = require('./subject.js');
 
-var ShowEvent = function() {
+var ViewEvent = function() {
   this.events = LearnEvent.prototype.getEvents();
   this.categories = LearnEvent.prototype.getCategories();
 
@@ -24,7 +24,7 @@ var ShowEvent = function() {
         newEv.querySelector('.show-event-list').appendChild(evList[i]);
       }
 
-      document.querySelector('#show-events').appendChild(newEv);
+      document.querySelector('#view-events').appendChild(newEv);
     }
   };
 
@@ -50,8 +50,8 @@ var ShowEvent = function() {
 
 };
 
-ShowEvent.prototype.resetData = function() {
-  var show = document.querySelector('#show-events');
+ViewEvent.prototype.resetData = function() {
+  var show = document.querySelector('#view-events');
 
   while (show.querySelector('.show-single-event')) {
     show.removeChild(show.lastChild);
@@ -59,4 +59,4 @@ ShowEvent.prototype.resetData = function() {
 
 };
 
-module.exports = ShowEvent;
+module.exports = ViewEvent;

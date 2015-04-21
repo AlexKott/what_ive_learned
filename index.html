@@ -13,7 +13,7 @@
   <a href="#"><div class="header logo"></div></a>
   <div class="container">
     <a href="#new-event"><button type="button" id="home-new"></button></a>
-    <a href="#show-events"><button type="button" id="home-view"></button></a>
+    <a href="#view-events"><button type="button" id="home-view"></button></a>
   </div>
 </div>
 
@@ -43,8 +43,16 @@
       </div>
     </div>
 
+    <div id="new-submit-done" style="display:none">
+      <span>Submitted!<br>Add another Event?</span>
+      <div class="buttons">
+        <button id="new-reset" class="submit"></button>
+        <button id="new-end" class="cancel"></button>
+      </div>
+    </div>
+
     <div id="add-form" style="display:none">
-      <input type="text" id="add-title">
+      <input type="text" id="add-title"><br>
       <div id="add-color" class="colorpicker-button"></div>
       <button id="add-submit" class="submit"></button>
     </div>
@@ -53,7 +61,7 @@
   </div>
 </div> <!-- new event -->
 
-<div id="show-events" class="page container" style="display:none"></div>
+<div id="view-events" class="page container" style="display:none"></div>
 
 </div> <!-- wrapper -->
 

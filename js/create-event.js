@@ -10,12 +10,12 @@ var CreateEvent = function() {
     Since I will be using the ColorPicker two times,
     it needs to get configured.
   */
-  ColorPicker.prototype.configColors(false, ['rgb(120,130,140)', '#99eeff', 'rgb(180,200,50)', 'rgb(10,210,180)']);
-  ColorPicker.prototype.configSize(2, 30);
+  ColorPicker.prototype.configColors(true, ['rgb(120,130,140)', '#99eeff', 'rgb(180,200,50)', 'rgb(10,210,180)']);
+  ColorPicker.prototype.configSize(5, 30);
 
   this.states = ['settingCat', 'settingSub', 'settingText', 'done', 'addingCat', 'addingSub'];
   this.currentState = 0;
-  this.data =  {'milestone': false};
+  this.data =  {};
   this.clickListeners = [];
 
   this.setToday = function() {
@@ -37,7 +37,7 @@ var CreateEvent = function() {
       this.fillNewDescription();
     }
     else if (this.currentState === 3) { // done
-
+      this.fillSubmitDone();
     }
     else if (this.currentState === 4 || this.currentState === 5) { // addingCat or addingSub
       this.fillAddForm();
@@ -74,12 +74,17 @@ var CreateEvent = function() {
   };
 
   this.fillAddForm = function() {
+    uiQuery.hideElem('#new-select');
+    uiQuery.showElem('#add-form');
+
     if (!this.cPicker) {
       this.cPicker = new ColorPicker(document.querySelector('#add-color'));
     }
+  };
 
-    uiQuery.hideElem('#new-select');
-    uiQuery.showElem('#add-form');
+  this.fillSubmitDone = function() {
+    uiQuery.hideElem('#new-description');
+    uiQuery.showElem('#new-submit-done');
   };
 
   this.setupListener = function() {
@@ -101,6 +106,8 @@ var CreateEvent = function() {
         func = this.checkDescription.bind(this);
         break;
       case 3: // done
+        selector = '#new-reset';
+        func = this.resetFields.bind(this);
         break;
       case 4: // addingCat
       case 5: // addingSub
@@ -132,7 +139,6 @@ var CreateEvent = function() {
 
     // additional listeners needed for submit new event button and milestone
     if (this.currentState === 2) { // settingText
-      console.log('asdfgg');
       addFunc = function(e) {
         if (!e.target.disabled) {
           this.submitEvent.call(this);
@@ -141,9 +147,9 @@ var CreateEvent = function() {
         }
       }.bind(this);
       addFunc2 = function(e) {
-        this.data.milestone = !this.data.milestone;
+        if (this.data.milestone === undefined) { this.data.milestone = false; }
 
-        console.log('asdf');
+        this.data.milestone = !this.data.milestone;
 
         if (this.data.milestone) {
           e.target.className += ' active';
@@ -160,6 +166,15 @@ var CreateEvent = function() {
 
     }
 
+    // additional listener needed for quit adding events
+    if (this.currentState === 3) { // done
+      addFunc = function() {
+        this.resetFields();
+        window.location.hash = '#view-events';
+      }.bind(this);
+      document.querySelector('#new-end').addEventListener(uiQuery.clickAction, addFunc);
+      this.clickListeners.push('#new-end');
+    }
   };
 
   this.removeListeners = function() {
@@ -173,26 +188,35 @@ var CreateEvent = function() {
     this.clickListeners = [];
   };
 
-  this.selectedCatOrSub = function(e, directSel) {
+  this.selectedCatOrSub = function(e, newTitle) {
     var isValidTarget = (e && e.target && e.target.tagName === 'LI'),
-        selText, selWhat;
+        selText, selWhat, selColor, cats, subs;
 
-    if (isValidTarget || directSel) {
+    if (isValidTarget || newTitle) {
 
-      if (!directSel) { directSel = e.target.innerText; }
+      if (!newTitle) { newTitle = e.target.innerText; }
 
       if (this.currentState === 1) { // settingSub
         selWhat = 'subject';
+        cats = LearnEvent.prototype.getCategories();
+        subs = cats[this.data.category].subjects;
+        selColor = subs[newTitle].color;
         this.currentState = 2; // settingText
       }
 
       else if (this.currentState === 0) { // settingCat
         selWhat = 'category';
+        cats = LearnEvent.prototype.getCategories();
+        selColor = cats[newTitle].color;
         this.currentState = 1; // settingSub
       }
 
-      this.data[selWhat] = directSel;
-      document.querySelector('#current-' + selWhat).innerText = directSel;
+      if (typeof selColor === 'string') {
+        selColor = selColor.toColor();
+      }
+      this.data[selWhat] = newTitle;
+      document.querySelector('#current-' + selWhat).innerText = newTitle;
+      document.querySelector('#current-' + selWhat).style.color = 'rgb(' + selColor.r + ',' + selColor.g + ',' + selColor.b + ')';
       uiQuery.showElem('#current-' + selWhat);
 
       this.fillContainer();
@@ -251,15 +275,13 @@ var CreateEvent = function() {
     }
   };
 
-
-
   this.submitEvent = function() {
     var date = this.data.today,
         fields = {
           category: this.data.category,
           subject: this.data.subject,
           description: this.data.description,
-          isMilestone: document.querySelector('#new-milestone').checked
+          isMilestone: this.data.milestone,
         };
 
     try {
@@ -271,6 +293,20 @@ var CreateEvent = function() {
     }
   };
 
+  this.resetFields = function() {
+    uiQuery.hideElem('#new-submit-done');
+    uiQuery.hideElem('#current-category');
+    uiQuery.hideElem('#current-subject');
+    document.querySelector('#current-category').innerText = '';
+    document.querySelector('#current-subject').innerText = '';
+    this.removeListeners();
+    this.currentState = 0;
+    this.data = {};
+    this.setToday();
+    this.fillContainer();
+  };
+
+
   this.setToday();
   this.currentState = 0; // settingCat
   this.fillContainer();
@@ -278,23 +314,7 @@ var CreateEvent = function() {
 };
 
 CreateEvent.prototype.resetData = function() {
-  var inputTextList = document.querySelectorAll('#new-event input[type="text"]'),
-      iTLength = inputTextList.length;
-
-  this.data = {};
-  this.resetActive('new-event');
-  this.removeListeners();
-
-  for (var i = 0; i < iTLength; i++) {
-    inputTextList[i].value = '';
-  }
-  // Needs to get cleared again through a bug ?!
-  document.querySelector('#new-description>input').value = '';
-
-  uiQuery.hideElem(['#new-description', '#new-submit', '#new-cat', '#add-sub', '#new-sub']);
-  document.querySelector('#new-milestone').checked = false;
-  document.querySelector('#new-sub-list').innerHTML = '';
-
+  this.resetFields();
 };
 
 
