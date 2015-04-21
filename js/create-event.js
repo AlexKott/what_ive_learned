@@ -13,7 +13,9 @@ var CreateEvent = function() {
   ColorPicker.prototype.configColors(false, ['rgb(120,130,140)', '#99eeff', 'rgb(180,200,50)', 'rgb(10,210,180)']);
   ColorPicker.prototype.configSize(2, 30);
 
-  this.data =  {};
+  this.states = ['settingCat', 'settingSub', 'settingText', 'done', 'addingCat', 'addingSub'];
+  this.currentState = 0;
+  this.data =  {'milestone': false};
   this.clickListeners = [];
 
   this.setToday = function() {
@@ -24,51 +26,146 @@ var CreateEvent = function() {
         monthName = months[date.getMonth()];
     this.data.today = LearnEvent.prototype.transformDate(date);
 
-    document.querySelector('#new-date').innerText = dayName + ', ' + date.getDate() + '. ' + monthName + ' ' + date.getFullYear();
+    document.querySelector('#current-date').innerText = dayName + ', ' + date.getDate() + '. ' + monthName + ' ' + date.getFullYear();
   };
 
-  this.setupListeners = function() {
-    var self = this,
-        evList = this.clickListeners;
+  this.fillContainer = function() {
+    if (this.currentState === 0 || this.currentState === 1) { // settingCat or settingSub
+      this.fillNewList();
+    }
+    else if (this.currentState === 2) { // settingText
+      this.fillNewDescription();
+    }
+    else if (this.currentState === 3) { // done
 
-    document.querySelector('#add-cat')
-      .addEventListener(uiQuery.clickAction, this.addCategory.bind(this));
-    evList.push('add-cat');
+    }
+    else if (this.currentState === 4 || this.currentState === 5) { // addingCat or addingSub
+      this.fillAddForm();
+    }
 
-    document.querySelector('#add-sub')
-      .addEventListener(uiQuery.clickAction, this.addSubject.bind(this));
-    evList.push('add-sub');
+    this.setupListener();
+  };
 
-    document.querySelector('#new-cat-list')
-      .addEventListener(uiQuery.clickAction, function(e) {
-        self.updateSubs(e.target);
-      }, false);
-    evList.push('new-cat-list');
+  this.fillNewList = function() {
+    var newList = document.querySelector('#new-list'),
+        loadedList, newListItem;
 
-    document.querySelector('#new-sub-list')
-      .addEventListener(uiQuery.clickAction, function(e) {
-        self.selectedSub(e.target);
-      }, false);
-    evList.push('new-sub-list');
+    newList.innerHTML = '';
 
-    document.querySelector('#new-description')
-      .addEventListener('input', function(e) {
-        self.changedDescr(e.target);
-      }, false);
-    evList.push('new-description');
+    if (this.currentState === 0) { // settingCat
+      loadedList = category.getCatList();
+    }
+    else if (this.currentState === 1) { // settingSub
+      loadedList = subject.getSubList(this.data.category);
+    }
 
-    document.querySelector('#new-submit')
-      .addEventListener(uiQuery.clickAction, this.submitEvent.bind(this));
-    evList.push('new-submit');
+    loadedList.forEach(function (item) {
+      newListItem = document.createElement('LI');
+      newListItem.innerText = item;
+      newList.appendChild(newListItem);
+    });
+
+    uiQuery.showElem('#new-select');
+  };
+
+  this.fillNewDescription = function() {
+    uiQuery.hideElem('#new-select');
+    uiQuery.showElem('#new-description');
+  };
+
+  this.fillAddForm = function() {
+    if (!this.cPicker) {
+      this.cPicker = new ColorPicker(document.querySelector('#add-color'));
+    }
+
+    uiQuery.hideElem('#new-select');
+    uiQuery.showElem('#add-form');
+  };
+
+  this.setupListener = function() {
+    var action = uiQuery.clickAction,
+        selector, func, newState, addFunc, addFunc2;
+    this.removeListeners();
+
+    // one listener for each state through switch.
+    // additional listeners need to be added below this.
+    switch (this.currentState) {
+      case 0: // settingCat
+      case 1: // settingSub
+        selector = '#new-list';
+        func = this.selectedCatOrSub.bind(this);
+        break;
+      case 2: // settingText
+        action = 'input';
+        selector = '#new-description';
+        func = this.checkDescription.bind(this);
+        break;
+      case 3: // done
+        break;
+      case 4: // addingCat
+      case 5: // addingSub
+        selector = '#add-submit';
+        func = this.addCatOrSub.bind(this);
+        break;
+    }
+
+    document.querySelector(selector).addEventListener(action, func);
+    this.clickListeners.push(selector);
+
+
+    // additional listener needed for "Add Cat / Add Sub" - button
+    if (this.currentState === 0 || this.currentState === 1) { // settingCat or settingSub
+      addFunc = function() {
+        if (this.currentState === 0) { // settingCat
+          this.currentState = 4; // addingCat
+        }
+        else if (this.currentState === 1) { // settingSub
+          this.currentState = 5; // addingSub
+        }
+        this.fillContainer.call(this);
+
+      }.bind(this);
+
+      document.querySelector('#new-add').addEventListener(uiQuery.clickAction, addFunc);
+      this.clickListeners.push('#new-add');
+    }
+
+    // additional listeners needed for submit new event button and milestone
+    if (this.currentState === 2) { // settingText
+      console.log('asdfgg');
+      addFunc = function(e) {
+        if (!e.target.disabled) {
+          this.submitEvent.call(this);
+          this.currentState = 3; // done
+          this.fillContainer.call(this);
+        }
+      }.bind(this);
+      addFunc2 = function(e) {
+        this.data.milestone = !this.data.milestone;
+
+        console.log('asdf');
+
+        if (this.data.milestone) {
+          e.target.className += ' active';
+        }
+        else {
+          e.target.className = e.target.className.replace(' active', '');
+        }
+      }.bind(this);
+      document.querySelector('#new-submit').addEventListener(uiQuery.clickAction, addFunc);
+      this.clickListeners.push('#new-submit');
+
+      document.querySelector('#new-milestone').addEventListener(uiQuery.clickAction, addFunc2);
+      this.clickListeners.push('#new-milestone');
+
+    }
 
   };
 
   this.removeListeners = function() {
-    var evList = this.clickListeners,
-        oldE, newE;
-
-    evList.forEach(function(v) {
-      oldE = document.getElementById(v);
+    var oldE, newE;
+    this.clickListeners.forEach(function(v) {
+      oldE = document.querySelector(v);
       newE = oldE.cloneNode(true);
       oldE.parentNode.replaceChild(newE, oldE);
     });
@@ -76,206 +173,85 @@ var CreateEvent = function() {
     this.clickListeners = [];
   };
 
-  this.fillDOMList = function(list, DOMList) {
-    var newItem;
+  this.selectedCatOrSub = function(e, directSel) {
+    var isValidTarget = (e && e.target && e.target.tagName === 'LI'),
+        selText, selWhat;
 
-    DOMList.innerHTML = '';
+    if (isValidTarget || directSel) {
 
-    list.forEach(function(item) {
-      newItem = document.createElement('LI');
-      newItem.innerText = item;
-      DOMList.appendChild(newItem);
-    });
+      if (!directSel) { directSel = e.target.innerText; }
+
+      if (this.currentState === 1) { // settingSub
+        selWhat = 'subject';
+        this.currentState = 2; // settingText
+      }
+
+      else if (this.currentState === 0) { // settingCat
+        selWhat = 'category';
+        this.currentState = 1; // settingSub
+      }
+
+      this.data[selWhat] = directSel;
+      document.querySelector('#current-' + selWhat).innerText = directSel;
+      uiQuery.showElem('#current-' + selWhat);
+
+      this.fillContainer();
+    }
   };
 
-  this.loadCats = function() {
-    var catList = category.getCatList(),
-        catDOMList = document.querySelector('#new-cat-list'),
-        newCat;
+  this.addCatOrSub = function() {
+    var addTitle = document.querySelector('#add-title').value,
+        isValid = this.checkAddValue(addTitle),
+        color = this.cPicker.currentColor;
 
-    this.fillDOMList(catList, catDOMList);
+    if (!isValid) {
+      throw new Error('No valid title'); // TODO change this
+    }
+
+    if (this.currentState === 4) { // addingCat
+      category.addNewCategory(addTitle, {'color': color});
+      this.currentState = 0; // settingCat
+    }
+    else if (this.currentState === 5) { // addingSub
+      subject.addNewSubject(this.data.category, addTitle, {'color': color});
+      this.currentState = 1; // settingSub
+    }
+
+    uiQuery.hideElem('#add-form');
+
+    this.selectedCatOrSub(null, addTitle);
   };
 
-  this.addCategory = function() {
-    var self = this,
-        catList = LearnEvent.prototype.getCategories(),
-        colorBlackList = [],
-        createListener = true,
-        hideNewCat = function(e) {
-          if (e.target.id !== 'new-cat' &&
-              e.target.parentNode.id !== 'new-cat' &&
-              e.target.id !== 'add-cat' &&
-              e.target.className.indexOf('colorpicker-field') === -1) {
-            uiQuery.hideElem('#new-cat');
-            if (this.catColorPicker) {
-              this.catColorPicker.hideColorPicker();
-            }
-            document.removeEventListener(uiQuery.clickAction, hideNewCat);
-          }
-        };
+  this.checkAddValue = function(addValue) {
+    var checkList;
 
-    uiQuery.showElem('#new-cat');
+    if (addValue.trim() === '') { return false; }
 
-    document.addEventListener(uiQuery.clickAction, hideNewCat);
-
-    if (!this.catColorPicker) {
-      this.catColorPicker = new ColorPicker(document.querySelector('#new-cat-color'));
+    if (this.currentState === 4) { // addingCat
+      checkList = category.getCatList();
+    }
+    else if (this.currentState === 5) { // addingSub
+      checkList = subject.getSubList(this.data.category);
     }
 
-    for (var cat in catList) {
-      colorBlackList.push(catList[cat].color);
-    }
-    this.catColorPicker.removeColors(colorBlackList);
-    this.catColorPicker.createElement();
-
-    this.clickListeners.forEach(function(listener) {
-      if(listener === 'new-cat-submit') { createListener = false; }
-    });
-
-    if(createListener) {
-      document.querySelector('#new-cat-submit')
-        .addEventListener(uiQuery.clickAction, function() {
-          var name = document.querySelector('#new-cat-name').value,
-              color = ColorPicker.prototype.getColorString(self.catColorPicker.currentColor);
-          category.addNewCategory(name, {'color':color});
-          self.catColorPicker.removeColors([color]);
-          self.catColorPicker.createElement();
-          self.catColorPicker.resetColor();
-
-          self.loadCats();
-
-          self.updateSubs(document.querySelector('#new-cat-list').lastChild);
-
-          document.querySelector('#new-cat-name').value = '';
-
-          uiQuery.hideElem('#new-cat');
-
-          document.removeEventListener(hideNewCat);
-
-        }, false);
-
-      this.clickListeners.push('new-cat-submit');
-    }
-
-  };
-
-  this.addSubject = function() {
-    var self = this,
-        catList = LearnEvent.prototype.getCategories(),
-        colorBlackList = [],
-        createListener = true;
-        hideNewSub = function(e) {
-          if (e.target.id !== 'new-sub' &&
-              e.target.parentNode.id !== 'new-sub' &&
-              e.target.id !== 'add-sub' &&
-              e.target.className.indexOf('colorpicker-field') === -1) {
-            uiQuery.hideElem('#new-sub');
-            if (this.subColorPicker) {
-              this.subColorPicker.hideColorPicker();
-            }
-            document.removeEventListener(uiQuery.clickAction, hideNewSub);
-          }
-        };
-
-    uiQuery.showElem('#new-sub');
-
-    document.addEventListener(uiQuery.clickAction, hideNewSub);
-
-    if (!this.subColorPicker) {
-      this.subColorPicker = new ColorPicker(document.querySelector('#new-sub-color'));
-    }
-
-    for (var sub in catList[self.data.category].subjects) {
-      colorBlackList.push(catList[self.data.category].subjects[sub].color);
-    }
-    this.subColorPicker.removeColors(colorBlackList);
-    this.subColorPicker.createElement();
-
-    this.clickListeners.forEach(function(listener) {
-      if(listener === 'new-sub-submit') { createListener = false; }
+    checkList.forEach(function(val) {
+      if (addValue === val) { return false; }
     });
 
-    if (createListener) {
-      document.querySelector('#new-sub-submit')
-        .addEventListener(uiQuery.clickAction, function() {
-          var name = document.querySelector('#new-sub-name').value,
-              color = ColorPicker.prototype.getColorString(self.subColorPicker.currentColor);
-
-          subject.addNewSubject(self.data.category, name, {'color':color});
-          self.subColorPicker.removeColors([color]);
-          self.subColorPicker.createElement();
-          self.subColorPicker.resetColor();
-          self.updateSubs(null, self.data.category);
-          self.data.subject = name;
-
-          uiQuery.showElem(['#new-description', '#new-submit']);
-
-          document.querySelector('#new-sub-name').value = '';
-
-          uiQuery.hideElem('#new-sub');
-
-        }, false);
-
-      this.clickListeners.push('new-sub-submit');
-    }
+    return true;
   };
 
-  this.updateSubs =  function(target, directCat) {
-    var subList, newSub,
-        subDOMList = document.querySelector('#new-sub-list'),
-        isValidTarget = (target && target.tagName === 'LI' && target.className.indexOf('active') === -1);
-
-    if (isValidTarget) {
-
-      subList = subject.getSubList(target.innerText);
-
-      this.resetActive('new-event');
-      target.className += ' active';
-      this.data.category = target.innerText;
-
-      uiQuery.showElem('#add-sub');
-    }
-
-    else if (directCat) { subList = subject.getSubList(directCat); }
-
-    if (isValidTarget || directCat) { this.fillDOMList(subList, subDOMList); }
-
-    if (directCat) { subDOMList.lastChild.className += ' active'; }
-
-  };
-
-  this.selectedSub = function(target) {
-    if(target.tagName === 'LI' && target.className.indexOf('active') === -1) {
-
-      this.resetActive('new-sub-list');
-      target.className += ' active';
-      this.data.subject = target.innerText;
-
-      uiQuery.showElem(['#new-description', '#new-submit']);
-    }
-  };
-
-
-  this.resetActive = function(el) {
-    var queryList = document.querySelector('#' + el),
-        aList = queryList.querySelectorAll('.active');
-        aListLength = aList.length;
-
-    for (var i = 0; i < aListLength; i++) {
-      aList[i].className = aList[i].className.replace(' active', '');
-    }
-
-  };
-
-  this.changedDescr = function(target) {
-    if(target.value !== null && target.value.trim() !== '') {
+  this.checkDescription = function(e) {
+    if(e.target.value !== null && e.target.value.trim() !== '') {
       document.querySelector('#new-submit').disabled = false;
-      this.data.description = target.value;
+      this.data.description = e.target.value;
     }
     else {
       document.querySelector('#new-submit').disabled = true;
     }
   };
+
+
 
   this.submitEvent = function() {
     var date = this.data.today,
@@ -296,8 +272,8 @@ var CreateEvent = function() {
   };
 
   this.setToday();
-  this.setupListeners();
-  this.loadCats();
+  this.currentState = 0; // settingCat
+  this.fillContainer();
 
 };
 

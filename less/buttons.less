@@ -31,3 +31,26 @@ button {
   background: url('/svg/button-add.svg') no-repeat center;
   background-size: cover;
 }
+
+#new-milestone {
+  width: 75px;
+  height: 100px;
+  margin-left: -75px;
+  background: url('/svg/button-milestone.svg') no-repeat center;
+  background-size: cover;
+  &.active {
+    background: url('/svg/button-milestone-active.svg') no-repeat center;
+    background-size: cover;
+  }
+}
+
+button.submit {
+  width: 100px;
+  height: 100px;
+  background: url('/svg/button-submit.svg') no-repeat center;
+  background-size: cover;
+  &[disabled] {
+    background: url('/svg/button-submit-disabled.svg') no-repeat center;
+    background-size: cover;
+  }
+}

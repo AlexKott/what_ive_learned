@@ -20,37 +20,36 @@
 <div id="new-event" class="page" style="display:none">
   <div class="header">
     <a href="#"><div class="lightbulb"></div></a>
-    <span id="new-date" class="header-date"></span>
+    <div class="current">
+      <span id="current-date" class="header-date"></span>
+      <span id="current-category" class="header-cat" style="display:none"></span>
+      <span id="current-subject" class="header-sub" style="display:none"></span>
+    </div>
   </div>
   <div class="container">
-    <ul id="new-list">
-      <li>Cooking</li>
-    </ul>
-    <div class="buttons">
-      <button id="new-add"></button>
-    </div>
 
-    <button id="add-cat">+++ Add a new Category</button>
-    <div id="new-cat" style="display:none">
-      Name: <input type="text" id="new-cat-name"><br>
-      Color: <div id="new-cat-color" class="colorpicker-button"></div><br>
-      <button id="new-cat-submit">Add</button>
+    <div id="new-select" style="display:none">
+      <ul id="new-list"></ul>
+      <div class="buttons">
+        <button id="new-add"></button>
+      </div>
     </div>
-    <ul id="new-cat-list"></ul>
-
-    <button id="add-sub" style="display:none">+++ Add a new Subject</button>
-    <div id="new-sub" style="display:none">
-      Name: <input type="text" id="new-sub-name"><br>
-      Color: <div id="new-sub-color" class="colorpicker-button"></div><br>
-      <button id="new-sub-submit">Add</button>
-    </div>
-    <ul id="new-sub-list"></ul>
 
     <div id="new-description" style="display:none">
-      <br><br>Description: <input type="text">
-    <span>Milestone </span><input type="checkbox" id="new-milestone">
+      <input type="text">
+      <div class="buttons">
+        <button id="new-milestone"></button>
+        <button id="new-submit" class="submit" disabled="true"></button>
+      </div>
     </div>
-    <button id="new-submit" disabled="true" style="display:none">ADD EVENT</button>
+
+    <div id="add-form" style="display:none">
+      <input type="text" id="add-title">
+      <div id="add-color" class="colorpicker-button"></div>
+      <button id="add-submit" class="submit"></button>
+    </div>
+
+
   </div>
 </div> <!-- new event -->
 

@@ -1,8 +1,9 @@
 /* COLORS */
-@white: rgb(240,240,255);
+@light-blue: rgb(215,228,255);
+@dark-blue: rgb(0,4,51);
 
 body {
-  background: @white;
+  background: @light-blue;
   padding: 0;
   margin: 0;
   overflow: hidden;
@@ -13,16 +14,14 @@ body {
 
 .header {
   width: 300px;
-  height: 40px;
   margin: 10px;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
-  -webkit-align-items: center;
-  align-items: center;
-  >span.header-date {
-    width: 200px;
+  div.current {
+    padding: 10px 0;
     text-align: center;
+    width: 200px;
   }
 }
 
@@ -31,6 +30,7 @@ body {
     margin: 0 23vw;
   }
   .logo {
+    height: 40px;
     background: url('/svg/logo.svg') no-repeat center;
     background-size: cover;
   }
