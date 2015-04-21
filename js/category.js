@@ -1,4 +1,5 @@
-var categories = require('./content/categories.js');
+var categories = require('./content/categories.js'),
+    dataControl = require('./data-control.js');
 
 var category = {
 
@@ -10,6 +11,8 @@ var category = {
 
     categories[title] = fields;
     categories[title].subjects = {};
+
+  //  dataControl.saveToJson('categories');
   },
 
   getCatList: function() {

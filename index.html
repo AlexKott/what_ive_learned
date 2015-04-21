@@ -1,28 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>What I've Learned</title>
-
-<!-- DEV ONLY! -->
-<style>
-.active {
-  background-color: #dd2222;
-}
-</style>
-<!-- /DEV ONLY! -->
+  <meta name="viewport" content="initial-scale=1">
+  <title>What I've Learned</title>
 </head>
 <body>
 
-<div id="main"></div>
+<div id="wrapper">
+
+<div id="header"><a href="#" id="logo">What I've learned</a></div>
 
 <div id="home" class="page container">
-  <a href="#new-event"><button type="button" id="home-new">Create new Learn Event for today</button></a><br>
+  <a href="#new-event"><button type="button" id="home-new">+</button></a>
   <a href="#show-events"><button type="button" id="home-show">Show Learn Events</button></a>
 </div>
 
-<!-- DEV ONLY -->
 <div id="new-event" class="page container" style="display:none">
-  <a href="#"><button id="home-button">HOME</button></a><br><br>
   <span id="new-date"></span><br><br>
 
   <button id="add-cat">+++ Add a new Category</button>
@@ -33,7 +26,7 @@
   </div>
   <ul id="new-cat-list"></ul>
 
-  <button id="add-sub" style="display:none">+++ Add a new Subject</button> <!-- DEV ONLY! -->
+  <button id="add-sub" style="display:none">+++ Add a new Subject</button>
   <div id="new-sub" style="display:none">
     Name: <input type="text" id="new-sub-name"><br>
     Color: <div id="new-sub-color" class="colorpicker-button"></div><br>
@@ -46,11 +39,11 @@
   <span>Milestone </span><input type="checkbox" id="new-milestone">
   </div>
   <button id="new-submit" disabled="true" style="display:none">ADD EVENT</button>
-</div>
+</div> <!-- new event -->
 
-<div id="show-events" class="page container" style="display:none">
-  <a href="#"><button id="home-button">HOME</button></a>
-</div>
+<div id="show-events" class="page container" style="display:none"></div>
+
+</div> <!-- wrapper -->
 
 <template id="show-single-event-tpl">
   <div class="show-single-event">

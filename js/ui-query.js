@@ -4,7 +4,7 @@ var uiQuery = {
   */
   checkTouch: function() {
     if ('ontouchstart' in document.documentElement) {
-      this.clickAction = 'touch';
+      this.clickAction = 'touchstart';
     }
     else {
       this.clickAction = 'click';
