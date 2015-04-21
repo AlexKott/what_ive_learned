@@ -20,7 +20,7 @@ var app = {
 
 };
 
-window.onload = function() {
+window.addEventListener('load', function() {
   uiQuery.checkTouch();
   app.initialise();
-};
+});

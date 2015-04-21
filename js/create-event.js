@@ -17,9 +17,14 @@ var CreateEvent = function() {
   this.clickListeners = [];
 
   this.setToday = function() {
-    this.data.today = LearnEvent.prototype.transformDate(new Date());
+    var date = new Date(),
+        weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        dayName = weekDays[date.getDay()],
+        months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+        monthName = months[date.getMonth()];
+    this.data.today = LearnEvent.prototype.transformDate(date);
 
-    document.querySelector('#new-date').innerText = this.data.today;
+    document.querySelector('#new-date').innerText = dayName + ', ' + date.getDate() + '. ' + monthName + ' ' + date.getFullYear();
   };
 
   this.setupListeners = function() {

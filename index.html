@@ -1,44 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta name="viewport" content="initial-scale=1">
+  <meta name="viewport" content="minimal-ui, width=device-width, initial-scale=1">
+  <link href='http://fonts.googleapis.com/css?family=Nothing+You+Could+Do' rel='stylesheet' type='text/css'>
   <title>What I've Learned</title>
 </head>
 <body>
 
 <div id="wrapper">
 
-<div id="header"><a href="#" id="logo">What I've learned</a></div>
-
-<div id="home" class="page container">
-  <a href="#new-event"><button type="button" id="home-new">+</button></a>
-  <a href="#show-events"><button type="button" id="home-show">Show Learn Events</button></a>
+<div id="home" class="page">
+  <a href="#"><div class="header logo"></div></a>
+  <div class="container">
+    <a href="#new-event"><button type="button" id="home-new"></button></a>
+    <a href="#show-events"><button type="button" id="home-view"></button></a>
+  </div>
 </div>
 
-<div id="new-event" class="page container" style="display:none">
-  <span id="new-date"></span><br><br>
-
-  <button id="add-cat">+++ Add a new Category</button>
-  <div id="new-cat" style="display:none">
-    Name: <input type="text" id="new-cat-name"><br>
-    Color: <div id="new-cat-color" class="colorpicker-button"></div><br>
-    <button id="new-cat-submit">Add</button>
+<div id="new-event" class="page" style="display:none">
+  <div class="header">
+    <a href="#"><div class="lightbulb"></div></a>
+    <span id="new-date" class="header-date"></span>
   </div>
-  <ul id="new-cat-list"></ul>
+  <div class="container">
+    <ul id="new-list">
+      <li>Cooking</li>
+    </ul>
+    <div class="buttons">
+      <button id="new-add"></button>
+    </div>
 
-  <button id="add-sub" style="display:none">+++ Add a new Subject</button>
-  <div id="new-sub" style="display:none">
-    Name: <input type="text" id="new-sub-name"><br>
-    Color: <div id="new-sub-color" class="colorpicker-button"></div><br>
-    <button id="new-sub-submit">Add</button>
-  </div>
-  <ul id="new-sub-list"></ul>
+    <button id="add-cat">+++ Add a new Category</button>
+    <div id="new-cat" style="display:none">
+      Name: <input type="text" id="new-cat-name"><br>
+      Color: <div id="new-cat-color" class="colorpicker-button"></div><br>
+      <button id="new-cat-submit">Add</button>
+    </div>
+    <ul id="new-cat-list"></ul>
 
-  <div id="new-description" style="display:none">
-    <br><br>Description: <input type="text">
-  <span>Milestone </span><input type="checkbox" id="new-milestone">
+    <button id="add-sub" style="display:none">+++ Add a new Subject</button>
+    <div id="new-sub" style="display:none">
+      Name: <input type="text" id="new-sub-name"><br>
+      Color: <div id="new-sub-color" class="colorpicker-button"></div><br>
+      <button id="new-sub-submit">Add</button>
+    </div>
+    <ul id="new-sub-list"></ul>
+
+    <div id="new-description" style="display:none">
+      <br><br>Description: <input type="text">
+    <span>Milestone </span><input type="checkbox" id="new-milestone">
+    </div>
+    <button id="new-submit" disabled="true" style="display:none">ADD EVENT</button>
   </div>
-  <button id="new-submit" disabled="true" style="display:none">ADD EVENT</button>
 </div> <!-- new event -->
 
 <div id="show-events" class="page container" style="display:none"></div>

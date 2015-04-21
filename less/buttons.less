@@ -1,13 +1,33 @@
 button {
   border: 0;
   border-radius: 0;
-  background: rgb(0,120,200);
+  margin: 0;
+  padding: 0;
+  display: block;
+  width: 54vw;
+  height: 54vw;
 }
 
 #home-new {
-  display: block;
-  width: 60vw;
-  height: 60vw;
-  font-size: 50vw;
-  font-weight: heavy;
+  background: url('/svg/home-new.svg') no-repeat center;
+  background-size: cover;
+}
+#home-view {
+  background: url('/svg/home-view.svg') no-repeat center;
+  background-size: cover;
+}
+
+.buttons {
+  height: 100px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#new-add {
+  width: 100px;
+  height: 100px;
+  background: url('/svg/button-add.svg') no-repeat center;
+  background-size: cover;
 }
