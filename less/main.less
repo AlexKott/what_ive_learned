@@ -25,6 +25,7 @@ body {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
+  background-color: @light-blue;
   div.current {
     padding: 10px 0;
     text-align: center;
@@ -32,21 +33,29 @@ body {
   }
 }
 
+.bottom-line {
+  width: 90vw;
+  height: 4vw;
+  background: url('/svg/line-bottom.svg') no-repeat center;
+  background-size: cover;
+}
+
 .container {
   width: 90vw;
-  >div {
-    margin-top: 10vh;
-  }
+  padding-top: 10vh;
 }
 
 #home {
-  .container {
-    margin: 0 23vw;
-  }
   .logo {
-    height: 40px;
+    width: 90vw;
+    height: 12vw;
     background: url('/svg/logo.svg') no-repeat center;
     background-size: cover;
+  }
+  button {
+    width: 54vw;
+    height: 54vw;
+    margin: 5vh 18vw;
   }
 }
 
@@ -74,5 +83,6 @@ textarea, input[type=text] {
 }
 
 @import 'typography';
+@import 'view';
 @import 'colorpicker';
 @import 'buttons';

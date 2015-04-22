@@ -4,10 +4,10 @@ var uiQuery = {
   */
   checkTouch: function() {
     if ('ontouchstart' in document.documentElement) {
-      this.clickAction = 'touchstart';
+      this.clickAction = 'touchend';
     }
     else {
-      this.clickAction = 'mousedown';
+      this.clickAction = 'click';
     }
   },
 

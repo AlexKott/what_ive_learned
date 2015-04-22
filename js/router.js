@@ -1,5 +1,6 @@
 var CreateEvent = require('./create-event.js'),
-    ViewEvent = require('./view-events.js');
+    ViewEvent = require('./view-events.js'),
+    uiQuery = require('./ui-query');
 
 var Router = function() {
   var self = this,
@@ -13,7 +14,8 @@ var Router = function() {
 
   this.loadView = function(path) {
     var pages = document.querySelectorAll('.page'),
-        pagesLength = pages.length;
+        pagesLength = pages.length,
+        self = this;
 
     switch (path) {
       case 'new-event':
@@ -23,15 +25,22 @@ var Router = function() {
         break;
       case 'view-events':
         if (this.currentView) { this.currentView.resetData(); }
-        document.querySelector('html').style.overflow = 'scroll';
         this.currentView = new ViewEvent();
         break;
-      default:
+      case 'home':
         if (this.currentView) {
           this.currentView.resetData();
           delete this.currentView;
         }
-        document.querySelector('html').style.overflow = 'hidden';
+        if (!this.pages.home) { // if this is the first visit
+          document.querySelector('#home-new').addEventListener(uiQuery.clickAction, function() {
+            self.setHash('new-event');
+          });
+          document.querySelector('#home-view').addEventListener(uiQuery.clickAction, function() {
+            self.setHash('view-events');
+          });
+          this.pages.home = true;
+        }
     }
 
 
@@ -53,6 +62,10 @@ var Router = function() {
     else {
       self.loadView('home');
     }
+  };
+
+  this.setHash = function(path) {
+    window.location.hash = '#' + path;
   };
 
   self.getHash();
