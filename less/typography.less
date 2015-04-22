@@ -1,14 +1,9 @@
-body {
+body, input, textarea {
   font-family: 'Nothing You Could Do', cursive;
   color: @dark-blue;
 }
-
-ul {
-  margin: 0;
-  padding: 0;
-  text-align: center;
-  list-style-type: none;
-  font-size: 28px;
+input, textarea {
+  font-size: 22px;
 }
 
 .header {
@@ -20,5 +15,16 @@ ul {
   }
   span.header-sub {
     font-size: 18px;
+  }
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  list-style-type: none;
+  font-size: 28px;
+  >li {
+    margin-bottom: 10px;
   }
 }

@@ -7,7 +7,7 @@ var uiQuery = {
       this.clickAction = 'touchstart';
     }
     else {
-      this.clickAction = 'click';
+      this.clickAction = 'mousedown';
     }
   },
 

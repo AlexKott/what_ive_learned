@@ -1,63 +1,31 @@
-var uiQuery = require('./ui-query.js');
+var uiQuery = require('./ui-query.js'),
+    LearnEvent = require('./learn-event.js');
 
 /*
   The constructor for a new ColorPicker. By default
   the "el" should be a div, so that the css styles
   can get applied.
 */
-var ColorPicker = function (el) {
-  var self = this;
-
-  var currentColor = {};
-
-  /*
-    The picker position is set to the bottom left corner
-    of the given element. This only needs to get calculated once.
-  */
-  this.setPickerPosition = function() {
-    var elPos = el.getBoundingClientRect(),
-        x, y;
-
-    x = elPos.left + el.offsetWidth;
-    y = elPos.top + el.offsetHeight;
-
-    return {'x': x, 'y': y};
-  };
+var ColorPicker = function (el, list, currentCat) {
+  var self = this,
+      currentColor = {};
 
   /*
-    After configuring the colors you can create the picker.
-    The picker element is cached and gets appended / removed
-    on demand.
+    This copies the buttonElement once for each color
   */
-  this.createElement = function() {
-    var pickerEl = document.createElement('DIV'),
-        fieldSize, columns, maxWidth, pickerField;
+  this.createElements = function() {
+    var pickerField, listEl = this.listEl;
 
-    if (this.fieldSize) { fieldSize = this.fieldSize; }
-    else { fieldSize = 40; }
-
-    if (this.columns) { columns = this.columns; }
-    else { columns = 5; }
-
-    maxWidth = fieldSize * columns;
-
-    pickerEl.classList.add('colorpicker-element');
-    pickerEl.style.left = this.pickerPosition.x + 'px';
-    pickerEl.style.top = this.pickerPosition.y + 'px';
-    pickerEl.style.maxWidth = maxWidth + 'px';
+    listEl.innerHTML = '';
 
     this.colorList.forEach(function(color) {
       pickerField = document.createElement('DIV');
       pickerField.classList.add('colorpicker-field');
       pickerField.style.backgroundColor = color;
-      pickerField.style.width = fieldSize + 'px';
-      pickerField.style.height = fieldSize + 'px';
-      pickerEl.appendChild(pickerField);
+      listEl.appendChild(pickerField);
     });
 
-    this.pickerEl = pickerEl;
-
-    this.pickerEl.addEventListener(uiQuery.clickAction, this.setColor.bind(this));
+    this.listEl.addEventListener(uiQuery.clickAction, this.setColor);
   };
 
   this.setColor = function(e) {
@@ -65,51 +33,40 @@ var ColorPicker = function (el) {
       // Extract the the values from backgroundColor
       var bgColor = e.target.style.backgroundColor,
           colors = bgColor.toColor();
+          nowActive = document.querySelector('.active-color');
+      if (nowActive) {
+        nowActive.className = nowActive.className.replace(' active-color', '');
+      }
+      e.target.className += ' active-color';
 
       this.currentColor = colors;
-      this.buttonEl.style.backgroundColor = this.getColorString(colors);
-      this.hideColorPicker();
     }
-  };
+  }.bind(this);
 
   this.resetColor = function() {
-    this.buttonEl.style.backgroundColor = 'rgb(255,255,255)';
+    var nowActive = document.querySelector('.active-color');
+    if (nowActive) {
+      nowActive.className = nowActive.className.replace(' active-color', '');
+    }
+    this.currentColor = '';
   };
 
-  /*
-    Appends the colorPicker to the document body.
-  */
-  this.showColorPicker = function() {
+  this.getColorBlackList = function(listName) {
+    var categories = LearnEvent.prototype.getCategories(),
+        blackList = [];
 
-    var addBlurListener = function(e) {
-      if (this.isPickerShown && e.target !== this.pickerEl && e.target !== this.buttonEl) {
-        this.hideColorPicker();
-        document.removeEventListener(uiQuery.clickAction, boundListener);
+    if (listName === 'colorListCat') {
+      for (var cat in categories) {
+        blackList.push(this.getColorString(categories[cat].color));
       }
-      else if (e.target !== this.buttonEl) {
-        document.removeEventListener(uiQuery.clickAction, boundListener);
+    }
+    else if (listName === 'colorListSub') {
+      blackList.push(this.getColorString(categories[currentCat].color));
+      for (var sub in categories[currentCat].subjects) {
+        blackList.push(this.getColorString(categories[currentCat].subjects[sub].color));
       }
-    };
-    var boundListener = addBlurListener.bind(this);
-
-    if (!this.isPickerShown) {
-
-      document.querySelector('body').appendChild(this.pickerEl);
-
-      document.addEventListener(uiQuery.clickAction, boundListener);
-
-      this.isPickerShown = true;
     }
-  };
-
-  /*
-    Removes the colorPicker from the document body.
-  */
-  this.hideColorPicker = function() {
-    if (this.isPickerShown) {
-      document.querySelector('body').removeChild(this.pickerEl);
-      this.isPickerShown = false;
-    }
+    this.removeColors.call(this, blackList);
   };
 
   this.removeColors = function (blackList) {
@@ -125,17 +82,10 @@ var ColorPicker = function (el) {
     });
   };
 
-  this.buttonEl = el;
-  this.pickerPosition = this.setPickerPosition();
-  this.createElement();
-  // copy the prototype into an own property
-  var newColorList = [];
-  ColorPicker.prototype.colorList.forEach(function(color) {
-    newColorList.push(color);
-  });
-  this.colorList = newColorList;
-
-  el.addEventListener(uiQuery.clickAction, this.showColorPicker.bind(this));
+  this.colorList = this[list];
+  this.getColorBlackList.call(this, list);
+  this.listEl = el;
+  this.createElements.call(this);
 };
 
 /*
@@ -143,14 +93,15 @@ var ColorPicker = function (el) {
   Colors must be in a css-readable format
   (e.g. '#fed123' or 'rgb(120, 140, 200)')
 */
-ColorPicker.prototype.colorList = ['rgb(255,255,255)', 'rgb(0,0,0)'];
+ColorPicker.prototype.colorListCat = [];
+ColorPicker.prototype.colorListSub = [];
 /*
   Use this functions to configure your colorList.
   If clearColors is set, all color presets are removed.
 */
-ColorPicker.prototype.configColors = function(clearColors, colors) {
+ColorPicker.prototype.configColors = function(list, clearColors, colors) {
   var self = this;
-  if (clearColors) { self.colorList = []; }
+  if (clearColors) { self[list] = []; }
   if (colors) {
     colors.forEach(function(color) {
       if(color.substring(0,4) !== 'rgb(') {
@@ -158,7 +109,7 @@ ColorPicker.prototype.configColors = function(clearColors, colors) {
         color = ColorPicker.prototype.getColorString(color);
       }
       if (color) {
-        self.colorList.push(color);
+        self[list].push(color);
       }
     });
   }

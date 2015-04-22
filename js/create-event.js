@@ -9,9 +9,10 @@ var CreateEvent = function() {
   /*
     Since I will be using the ColorPicker two times,
     it needs to get configured.
+    This uses a customised version of the ColorPicker
   */
-  ColorPicker.prototype.configColors(true, ['rgb(120,130,140)', '#99eeff', 'rgb(180,200,50)', 'rgb(10,210,180)']);
-  ColorPicker.prototype.configSize(5, 30);
+  ColorPicker.prototype.configColors('colorListCat', true, ['rgb(120,130,140)', '#99eeff', 'rgb(180,200,50)', 'rgb(10,210,180)']);
+  ColorPicker.prototype.configColors('colorListSub', true, ['rgb(120,130,140)', '#99eeff', 'rgb(180,200,50)', 'rgb(10,210,180)']);
 
   this.states = ['settingCat', 'settingSub', 'settingText', 'done', 'addingCat', 'addingSub'];
   this.currentState = 0;
@@ -70,20 +71,31 @@ var CreateEvent = function() {
 
   this.fillNewDescription = function() {
     uiQuery.hideElem('#new-select');
-    uiQuery.showElem('#new-description');
+    uiQuery.showElem('#new-final');
   };
 
   this.fillAddForm = function() {
+    var colorList, currentCat;
     uiQuery.hideElem('#new-select');
     uiQuery.showElem('#add-form');
 
-    if (!this.cPicker) {
-      this.cPicker = new ColorPicker(document.querySelector('#add-color'));
+    if (this.currentState === 4) { // addingCat
+      colorList = 'colorListCat';
+      if (!this.cPickerCat) {
+        this.cPickerCat = new ColorPicker(document.querySelector('#add-color'), colorList);
+      }
+    }
+    else if (this.currentState === 5) { // addingSub
+      colorList = 'colorListSub';
+      currentCat = this.data.category;
+      if (!this.cPickerSub) {
+        this.cPickerSub = new ColorPicker(document.querySelector('#add-color'), colorList, currentCat);
+      }
     }
   };
 
   this.fillSubmitDone = function() {
-    uiQuery.hideElem('#new-description');
+    uiQuery.hideElem('#new-final');
     uiQuery.showElem('#new-submit-done');
   };
 
@@ -226,24 +238,29 @@ var CreateEvent = function() {
   this.addCatOrSub = function() {
     var addTitle = document.querySelector('#add-title').value,
         isValid = this.checkAddValue(addTitle),
-        color = this.cPicker.currentColor;
+        color;
 
     if (!isValid) {
       throw new Error('No valid title'); // TODO change this
     }
 
     if (this.currentState === 4) { // addingCat
+      color = this.cPickerCat.currentColor;
       category.addNewCategory(addTitle, {'color': color});
+      this.cPickerCat.resetColor.call(this.cPickerCat);
       this.currentState = 0; // settingCat
     }
     else if (this.currentState === 5) { // addingSub
+      color = this.cPickerSub.currentColor;
       subject.addNewSubject(this.data.category, addTitle, {'color': color});
+      this.cPickerSub.resetColor.call(this.cPickerSub);
       this.currentState = 1; // settingSub
     }
 
     uiQuery.hideElem('#add-form');
 
     this.selectedCatOrSub(null, addTitle);
+    document.querySelector('#add-title').value = '';
   };
 
   this.checkAddValue = function(addValue) {
@@ -286,7 +303,6 @@ var CreateEvent = function() {
 
     try {
       new LearnEvent(date, fields);
-      alert('success!');
     }
     catch(error) {
       alert(error);
@@ -294,11 +310,24 @@ var CreateEvent = function() {
   };
 
   this.resetFields = function() {
-    uiQuery.hideElem('#new-submit-done');
-    uiQuery.hideElem('#current-category');
-    uiQuery.hideElem('#current-subject');
+    var mileStone = document.querySelector('#new-milestone'),
+        inputFields = document.querySelectorAll('input'),
+        inputLength = inputFields.length;
+    mileStone.className = mileStone.className.replace(' active', '');
+
+    for (var i = 0; i < inputLength; i++) {
+      inputFields[i].value = '';
+    }
+
+    uiQuery.hideElem(['#new-select',
+                      '#new-final',
+                      '#add-form',
+                      '#new-submit-done',
+                      '#current-category',
+                      '#current-subject']);
     document.querySelector('#current-category').innerText = '';
     document.querySelector('#current-subject').innerText = '';
+
     this.removeListeners();
     this.currentState = 0;
     this.data = {};

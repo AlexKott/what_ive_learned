@@ -18,10 +18,12 @@ var Router = function() {
     switch (path) {
       case 'new-event':
         if (this.currentView) { this.currentView.resetData(); }
+        document.querySelector('html').style.overflow = 'hidden';
         this.currentView = new CreateEvent();
         break;
       case 'view-events':
         if (this.currentView) { this.currentView.resetData(); }
+        document.querySelector('html').style.overflow = 'scroll';
         this.currentView = new ViewEvent();
         break;
       default:
@@ -29,6 +31,7 @@ var Router = function() {
           this.currentView.resetData();
           delete this.currentView;
         }
+        document.querySelector('html').style.overflow = 'hidden';
     }
 
 
