@@ -71,17 +71,72 @@ var ViewEvent = function() {
     return el;
   };
 
+  this.setActiveEvent = function(el) {
+    var footer = document.querySelector('#view-footer'),
+        oldActive, date, val, ev;
+
+    // NOTE the single = is correct here!
+    if (oldActive = document.querySelector('.show-single-event.active')) {
+      oldActive.className = oldActive.className.replace(' active', '');
+    }
+    el.className += ' active';
+
+    if (footer.className.indexOf('milestone')) {
+      footer.className = footer.className.replace(' milestone', '');
+    }
+
+    date = el.dataset.index.slice(0, -1);
+    val = el.dataset.index.slice(-1);
+
+    ev = this.events[date][val];
+
+    if (ev.isMilestone) {
+      footer.className += ' milestone';
+    }
+
+    footer.querySelector('.view-cat-sub').innerText = ev.category + ' - ' + ev.subject;
+    footer.querySelector('.view-description').innerText = ev.description;
+
+  };
+
+  this.setupEventListener = function() {
+    var selectEvent = function(e) {
+      var node = e.target, cName, oldActive;
+
+      while (node !== null) {
+        cName = node.className.toString();
+        if (cName.indexOf('show-single-event') === -1) {
+          node = node.parentNode;
+          continue;
+        }
+        else if (cName.indexOf(' active') !== -1) {
+          break;
+        }
+        else {
+          this.setActiveEvent(node);
+        }
+      }
+    }.bind(this);
+
+    document.querySelector('#present-events').addEventListener(uiQuery.clickAction, selectEvent);
+  };
+
   this.setCurrentMonth();
   this.presentLearnEvents();
+  this.setupEventListener();
 
 };
 
 ViewEvent.prototype.resetData = function() {
-  var show = document.querySelector('#present-events');
+  var show = document.querySelector('#present-events'),
+      newShow;
 
   while (show.querySelector('.show-single-event')) {
     show.removeChild(show.lastChild);
   }
+
+  newShow = show.cloneNode(true);
+  show.parentNode.replaceChild(newShow, show);
 
 };
 

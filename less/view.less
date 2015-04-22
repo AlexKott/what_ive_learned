@@ -40,4 +40,23 @@
     background: url('/svg/milestone-badge.svg') no-repeat;
     background-size: cover;
   }
+  &.active {
+    zoom: 1.1;
+    margin-top: -10px;
+  }
+}
+
+#view-footer {
+  position: absolute;
+  bottom: 0;
+  height: 25vh;
+  width: 90vw;
+  &.milestone {
+    background: url('/svg/milestone-badge.svg') no-repeat right top;
+    background-size: 18vw 24vw;
+  }
+  >.view-description {
+    width: 80vw;
+    margin: 10px auto;
+  }
 }

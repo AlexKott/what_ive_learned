@@ -33,12 +33,23 @@ body {
   }
 }
 
-.bottom-line {
+.bottom-line, .top-line {
   width: 90vw;
   height: 4vw;
+}
+.bottom-line {
   background: url('/svg/line-bottom.svg') no-repeat center;
   background-size: cover;
 }
+.top-line {
+  background: url('/svg/line-top.svg') no-repeat center;
+  background-size: cover;
+}
+.footer-line {
+  position:absolute;
+  bottom: 25vh;
+}
+
 
 .container {
   width: 90vw;
