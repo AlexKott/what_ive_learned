@@ -26,7 +26,51 @@ var categories = {
                 color: {r:120,g:40,b:255}
             }
         }
-    }
+    },
+    'Hiking': {
+        color: {r:120,g:200,b:100},
+        subjects: {
+            'Cars': {
+                color: {r:120,g:200,b:100}
+            },
+            'Boats': {
+                color: {r:120,g:40,b:255}
+            }
+        }
+    },
+    'Fishing': {
+        color: {r:120,g:200,b:100},
+        subjects: {
+            'Cars': {
+                color: {r:120,g:200,b:100}
+            },
+            'Boats': {
+                color: {r:120,g:40,b:255}
+            }
+        }
+    },
+    'Sailing': {
+        color: {r:120,g:200,b:100},
+        subjects: {
+            'Cars': {
+                color: {r:120,g:200,b:100}
+            },
+            'Boats': {
+                color: {r:120,g:40,b:255}
+            }
+        }
+    },
+    'Coding': {
+        color: {r:120,g:200,b:100},
+        subjects: {
+            'Cars': {
+                color: {r:120,g:200,b:100}
+            },
+            'Boats': {
+                color: {r:120,g:40,b:255}
+            }
+        }
+    },
 };
 
 module.exports = categories;

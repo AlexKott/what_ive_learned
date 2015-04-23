@@ -1,4 +1,6 @@
-require('../style.css');
+// Tocca, by Gianluca Guarini (https://github.com/GianlucaGuarini/Tocca.js)
+require('../node_modules/tocca/Tocca.js');
+
 var Router = require('./router.js'),
     uiQuery = require('./ui-query.js');
 

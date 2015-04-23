@@ -31,6 +31,9 @@ var CreateEvent = function() {
   };
 
   this.fillContainer = function() {
+    // hide all buttons
+    uiQuery.hideElem(['#new-add', '#new-milestone', '#new-submit', '#new-reset', '#new-end', '#add-submit']);
+
     if (this.currentState === 0 || this.currentState === 1) { // settingCat or settingSub
       this.fillNewList();
     }
@@ -66,18 +69,18 @@ var CreateEvent = function() {
       newList.appendChild(newListItem);
     });
 
-    uiQuery.showElem('#new-select');
+    uiQuery.showElem(['#new-select', '#new-add']);
   };
 
   this.fillNewDescription = function() {
     uiQuery.hideElem('#new-select');
-    uiQuery.showElem('#new-final');
+    uiQuery.showElem(['#new-final', '#new-submit', '#new-milestone']);
   };
 
   this.fillAddForm = function() {
     var colorList, currentCat;
     uiQuery.hideElem('#new-select');
-    uiQuery.showElem('#add-form');
+    uiQuery.showElem(['#add-form', '#add-submit']);
 
     if (this.currentState === 4) { // addingCat
       colorList = 'colorListCat';
@@ -96,7 +99,7 @@ var CreateEvent = function() {
 
   this.fillSubmitDone = function() {
     uiQuery.hideElem('#new-final');
-    uiQuery.showElem('#new-submit-done');
+    uiQuery.showElem(['#new-submit-done', '#new-reset', '#new-end']);
   };
 
   this.setupListener = function() {

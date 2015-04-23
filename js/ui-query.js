@@ -4,7 +4,7 @@ var uiQuery = {
   */
   checkTouch: function() {
     if ('ontouchstart' in document.documentElement) {
-      this.clickAction = 'touchend';
+      this.clickAction = 'tap';
     }
     else {
       this.clickAction = 'click';

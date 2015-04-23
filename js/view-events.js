@@ -50,7 +50,7 @@ var ViewEvent = function() {
 
         if (evs[eDate][i].isMilestone) {
           milestoneBadge = document.createElement('DIV');
-          milestoneBadge.className = 'milestone';
+          milestoneBadge.className = 'milestone-badge';
           singleEv.appendChild(milestoneBadge);
         }
 
@@ -81,8 +81,8 @@ var ViewEvent = function() {
     }
     el.className += ' active';
 
-    if (footer.className.indexOf('milestone')) {
-      footer.className = footer.className.replace(' milestone', '');
+    if (footer.className.indexOf('milestone-badge')) {
+      footer.className = footer.className.replace(' milestone-badge', '');
     }
 
     date = el.dataset.index.slice(0, -1);
@@ -91,7 +91,7 @@ var ViewEvent = function() {
     ev = this.events[date][val];
 
     if (ev.isMilestone) {
-      footer.className += ' milestone';
+      footer.className += ' milestone-badge';
     }
 
     footer.querySelector('.view-cat-sub').innerText = ev.category + ' - ' + ev.subject;

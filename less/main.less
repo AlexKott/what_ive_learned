@@ -2,98 +2,11 @@
 @light-blue: rgb(215,228,255);
 @dark-blue: rgb(0,4,51);
 
-html {
-  overflow: hidden;
-}
-
-body {
-  background: @light-blue;
-  padding: 0;
-  margin: 0;
-  position: relative;
-  min-height: 100vh;
-}
-#wrapper {
-  width: 90vw;
-  margin: auto;
-}
-
-.header {
-  width: 90vw;
-  height: 15vh;
-  margin: 10px 0 20px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  background-color: @light-blue;
-  div.current {
-    padding: 10px 0;
-    text-align: center;
-    width: 90vw;
-  }
-}
-
-.bottom-line, .top-line {
-  width: 90vw;
-  height: 4vw;
-}
-.bottom-line {
-  background: url('/svg/line-bottom.svg') no-repeat center;
-  background-size: cover;
-}
-.top-line {
-  background: url('/svg/line-top.svg') no-repeat center;
-  background-size: cover;
-}
-.footer-line {
-  position:absolute;
-  bottom: 25vh;
-}
-
-
-.container {
-  width: 90vw;
-  padding-top: 10vh;
-}
-
-#home {
-  .logo {
-    width: 90vw;
-    height: 12vw;
-    background: url('/svg/logo.svg') no-repeat center;
-    background-size: cover;
-  }
-  button {
-    width: 54vw;
-    height: 54vw;
-    margin: 5vh 18vw;
-  }
-}
-
-.lightbulb {
-  width: 15vw;
-  height: 15vw;
-  margin: 5px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: url('/svg/lightbulb.svg') no-repeat center;
-  background-size: cover;
-}
-
-textarea {
-  height: 50vw;
-}
-textarea, input[type=text] {
-  width: 90vw;
-  background: none;
-  resize: none;
-  border: 0;
-  outline: 0;
-  box-shadow: 0 0 2px @dark-blue inset;
-}
-
+@import 'layout';
 @import 'typography';
-@import 'view';
+@import 'home';
+@import 'new-event';
+@import 'view-events';
+@import 'images';
+@import 'elements';
 @import 'colorpicker';
-@import 'buttons';

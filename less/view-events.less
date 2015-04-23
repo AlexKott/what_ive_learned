@@ -1,0 +1,53 @@
+#view-events {
+  .header {
+    height: 12vh;
+  }
+  .container {
+    height: 58vh;
+    padding-top: 2vh;
+    display: flex;
+    align-items: flex-start;
+    align-content: flex-start;
+    flex-flow: row wrap;
+
+    .show-single-event {
+      height: 14vh;
+      min-width: 17.5vw;
+      >p {
+        width: 100%;
+        height: 1.2em;
+        margin: 0;
+        padding-left: 4vw;
+      }
+      >svg {
+        float: right;
+        width: 14vw;
+        height: 14vw;
+      }
+      >.milestone-badge {
+        z-index: 2;
+        position: relative;
+        left: 30px;
+        top: 20px;
+        width: 30px;
+        height: 40px;
+      }
+      &.active {
+        zoom: 1.1;
+        margin-top: -1vh;
+      }
+    }
+  }
+  .footer {
+    width: 90vw;
+    height: 28vh;
+    >.view-description {
+      width: 80vw;
+      margin: 10px auto;
+    }
+    &.milestone-badge {
+      background-position: right center;
+      background-size: 18vw 24vw;
+    }
+  }
+}

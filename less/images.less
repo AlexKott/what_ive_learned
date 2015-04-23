@@ -1,0 +1,64 @@
+.logo {
+  background: url('/svg/logo.svg') no-repeat top;
+  background-size: contain;
+}
+
+.lightbulb {
+  background: url('/svg/lightbulb.svg') no-repeat center;
+  background-size: cover;
+}
+
+.line {
+  &.bottom {
+    background: url('/svg/line-bottom.svg') no-repeat bottom;
+    background-size: cover;
+  }
+  &.top {
+    background: url('/svg/line-top.svg') no-repeat center;
+    background-size: cover;
+  }
+}
+
+button {
+  &.submit {
+    background: url('/svg/button-submit.svg') no-repeat center;
+    background-size: cover;
+    &[disabled] {
+      background: url('/svg/button-submit-disabled.svg') no-repeat center;
+      background-size: cover;
+    }
+  }
+  &.cancel {
+    background: url('/svg/button-cancel.svg') no-repeat center;
+    background-size: cover;
+  }
+  &.milestone {
+    background: url('/svg/button-milestone.svg') no-repeat center;
+    background-size: cover;
+    &.active {
+      background: url('/svg/milestone-badge.svg') no-repeat center;
+      background-size: cover;
+    }
+  }
+  &.add{
+    background: url('/svg/button-add.svg') no-repeat center;
+    background-size: cover;
+  }
+  &.home-new {
+    background: url('/svg/home-new.svg') no-repeat center;
+    background-size: cover;
+  }
+  &.home-view {
+    background: url('/svg/home-view.svg') no-repeat center;
+    background-size: cover;
+  }
+}
+
+.show-first-event {
+  background: url('/svg/line-vertical.svg') no-repeat 2vw;
+  background-size: contain;
+}
+.milestone-badge {
+  background: url('/svg/milestone-badge.svg') no-repeat;
+  background-size: cover;
+}
