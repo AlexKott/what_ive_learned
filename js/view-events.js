@@ -18,27 +18,29 @@ var ViewEvent = function() {
   };
 
   this.presentLearnEvents = function() {
-    var tpl = document.querySelector('#show-single-event-tpl'),
-        svg = [
+    var svg = [
                 document.querySelector('#svg-square-0'),
                 document.querySelector('#svg-square-1'),
                 document.querySelector('#svg-square-2'),
                 document.querySelector('#svg-square-3')
               ],
         evs = this.events,
-        evsLength, newEv, singleEv, rnd, squareEl, milestoneBadge;
+        evsLength, newEv, newDate, rnd, squareEl, milestoneBadge;
 
     for (var eDate in evs) {
       evsLength = evs[eDate].length;
 
       for (var i = 0; i < evsLength; i++) {
-        newEv = tpl.content.cloneNode(true);
-        singleEv = newEv.querySelector('.show-single-event');
+        newEv = document.createElement('DIV');
+        newEv.className = 'show-single-event';
+        newDate = document.createElement('P');
 
         if (i === 0) { // first event of a day gets an indicator
-          singleEv.className += ' show-first-event';
-          singleEv.querySelector('p').innerText = eDate.substring(6, 8); // get the day
+          newEv.className += ' show-first-event';
+          newDate.innerText = eDate.substring(6, 8); // get the day
         }
+
+        newEv.appendChild(newDate);
 
         // add a random square
         rnd = Math.floor(Math.random() * 4);
@@ -46,16 +48,16 @@ var ViewEvent = function() {
 
         squareEl = this.applyColors(squareEl, evs[eDate][i].category, evs[eDate][i].subject);
 
-        singleEv.appendChild(squareEl);
+        newEv.appendChild(squareEl);
 
         if (evs[eDate][i].isMilestone) {
           milestoneBadge = document.createElement('DIV');
           milestoneBadge.className = 'milestone-badge';
-          singleEv.appendChild(milestoneBadge);
+          newEv.appendChild(milestoneBadge);
         }
 
         // add a retrievable data-index
-        singleEv.dataset.index = eDate+i;
+        newEv.dataset.index = eDate+i;
 
         document.querySelector('#present-events').appendChild(newEv);
       }
@@ -85,8 +87,8 @@ var ViewEvent = function() {
       footer.className = footer.className.replace(' milestone-badge', '');
     }
 
-    date = el.dataset.index.slice(0, -1);
-    val = el.dataset.index.slice(-1);
+    date = el.dataset.index.slice(0, 8);
+    val = el.dataset.index.slice(8);
 
     ev = this.events[date][val];
 

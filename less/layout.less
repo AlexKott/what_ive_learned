@@ -28,7 +28,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-end;
-    >span {
+    >span, h1, h2, h3, h4, h5, h6 {
       width: 100%;
     }
   }
@@ -45,7 +45,7 @@ body {
 .container {
   width: 90vw;
   height: 50vh;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
 }
 
@@ -61,4 +61,12 @@ body {
 .line {
   width: 90vw;
   height: 4vw;
+  z-index: 3;
+  position: relative;
+  &.bottom {
+    margin-bottom: -2vh;
+  }
+  &.top {
+    margin-top: -2vh;
+  }
 }

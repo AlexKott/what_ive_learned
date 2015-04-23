@@ -11,6 +11,7 @@ var Router = function() {
     'new-event':true,
     'view-events':true
   };
+  this.currentView = {};
 
   this.loadView = function(path) {
     var pages = document.querySelectorAll('.page'),
@@ -19,27 +20,26 @@ var Router = function() {
 
     switch (path) {
       case 'new-event':
-        if (this.currentView) { this.currentView.resetData(); }
-        document.querySelector('html').style.overflow = 'hidden';
-        this.currentView = new CreateEvent();
+        if (self.currentView.resetData) { self.currentView.resetData(); }
+        self.currentView = new CreateEvent();
         break;
       case 'view-events':
-        if (this.currentView) { this.currentView.resetData(); }
-        this.currentView = new ViewEvent();
+        if (self.currentView.resetData) { self.currentView.resetData(); }
+        self.currentView = new ViewEvent();
         break;
       case 'home':
-        if (this.currentView) {
-          this.currentView.resetData();
-          delete this.currentView;
+        if (self.currentView.resetData) {
+          self.currentView.resetData();
+          self.currentView = {};
         }
-        if (!this.pages.home) { // if this is the first visit
+        if (!self.pages.home) { // if this is the first visit
           document.querySelector('#home-new').addEventListener(uiQuery.clickAction, function() {
             self.setHash('new-event');
           });
           document.querySelector('#home-view').addEventListener(uiQuery.clickAction, function() {
             self.setHash('view-events');
           });
-          this.pages.home = true;
+          self.pages.home = true;
         }
     }
 

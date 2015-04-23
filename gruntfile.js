@@ -7,6 +7,16 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
+        autoprefixer: {
+          options: {
+            browsers: ['last 2 versions']
+          },
+          build: {
+            src: 'style.css',
+            dest: 'build/style.css'
+          }
+        },
+
         connect: {
             build: {
                 options: {
@@ -15,6 +25,27 @@ module.exports = function(grunt) {
                     keepalive: false
                 }
             }
+        },
+
+        cssmin: {
+          target: {
+            files: [{
+              src: 'build/style.css',
+              dest: 'build/style.css'
+            }]
+          }
+        },
+
+        htmlmin: {
+          dist: {
+            options: {
+              removeComments: true,
+              collapseWhitespace: true
+            },
+            files: {
+              'build/index.html': 'index.html'
+            }
+          }
         },
 
         less: {
@@ -28,7 +59,7 @@ module.exports = function(grunt) {
         uglify: {
             dist: {
                 files: {
-                    'dist/script.js': 'dist/script.js',
+                    'build/bundle.js': 'bundle.js',
                 },
                 options: {
                     preserveComments: false,
@@ -66,5 +97,6 @@ module.exports = function(grunt) {
 });
 
     grunt.registerTask('serve', ['webpack', 'connect:build', 'watch']);
+    grunt.registerTask('build', ['webpack', 'uglify', 'less', 'autoprefixer:build', 'cssmin', 'htmlmin']);
 
 };
