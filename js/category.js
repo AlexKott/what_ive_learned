@@ -1,9 +1,10 @@
-var categories = require('./content/categories.js'),
-    dataControl = require('./data-control.js');
+var dataControl = require('./data-control.js');
 
 var category = {
 
   addNewCategory: function(title, fields) {
+
+    var categories = dataControl.categories;
 
     if(categories[title] !== undefined) {
       throw new Error('Category already exists');
@@ -12,13 +13,13 @@ var category = {
     categories[title] = fields;
     categories[title].subjects = {};
 
-  //  dataControl.saveToJson('categories');
+  dataControl.saveToJson('categories');
   },
 
   getCatList: function() {
     var cats = [];
 
-    for (var cat in categories) {
+    for (var cat in dataControl.categories) {
       cats.push(cat);
     }
 

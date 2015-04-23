@@ -131,6 +131,7 @@ var ViewEvent = function() {
 
 ViewEvent.prototype.resetData = function() {
   var show = document.querySelector('#present-events'),
+      footer = document.querySelector('#view-footer'),
       newShow;
 
   while (show.querySelector('.show-single-event')) {
@@ -139,6 +140,11 @@ ViewEvent.prototype.resetData = function() {
 
   newShow = show.cloneNode(true);
   show.parentNode.replaceChild(newShow, show);
+
+  Array.prototype.forEach.call(footer.childNodes, function(node) {
+    node.innerHTML = '';
+  });
+  footer.className = 'footer';
 
 };
 

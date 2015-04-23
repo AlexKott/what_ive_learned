@@ -1,5 +1,4 @@
-var events = require('./content/events.js');
-var categories = require('./content/categories.js');
+var dataControl = require('./data-control.js');
 
 var LearnEvent = function(date, fields) {
 
@@ -7,15 +6,21 @@ var LearnEvent = function(date, fields) {
     Checking for valid input
   */
 
+  var events = dataControl.events;
+
   if (!date) { throw new Error('Date missing!'); }
   else { this.date = date; }
 
   if (!fields) { throw new Error('No valid event data submitted!'); }
   else { this.fields = this.checkFields(fields); }
 
+  if (!events) { events = {}; }
+
   if (!events[date]) { events[date] = []; }
 
   events[date].push(this.fields);
+
+  dataControl.saveToJson('events');
 
 };
 
@@ -29,10 +34,10 @@ LearnEvent.prototype.checkFields = function(fieldData) {
   if (!fieldData.category || !fieldData.subject) {
     throw new Error('Event data is not complete! \nCategory: ' + fieldData.category + '\nSubject: ' + fieldData.subject);
   }
-  if (!categories[fieldData.category]) {
+  if (!dataControl.categories[fieldData.category]) {
     throw new Error('This category does not exist yet: ' + fieldData.category);
   }
-  if (!categories[fieldData.category].subjects[fieldData.subject]) {
+  if (!dataControl.categories[fieldData.category].subjects[fieldData.subject]) {
     throw new Error('This subject does not exist yet: ' + fieldData.subject);
   }
   if (!fieldData.isMilestone) { fieldData.isMilestone = false; }
@@ -41,9 +46,9 @@ LearnEvent.prototype.checkFields = function(fieldData) {
 };
 
 LearnEvent.prototype.delete = function(date) {
-  if(!events[date]) { throw new Error('There is no event for the given date!'); }
+  if(!dataControl.events[date]) { throw new Error('There is no event for the given date!'); }
 
-  else { delete events[date]; }
+  else { delete dataControl.events[date]; }
 };
 
 LearnEvent.prototype.transformDate = function(date) {
@@ -53,9 +58,6 @@ LearnEvent.prototype.transformDate = function(date) {
       day = ('0' + date.getDate()).slice(-2);
       newDate = year + month + day;
   }
-  else {
-    // TODO: transform to date
-  }
 
   return newDate;
 };
@@ -63,12 +65,12 @@ LearnEvent.prototype.transformDate = function(date) {
 LearnEvent.prototype.getEvents = function() {
   // TODO: specify how many events, from which file etc...
 
-  return events;
+  return dataControl.events;
 
 };
 
 LearnEvent.prototype.getCategories = function() {
-  return categories;
+  return dataControl.categories;
 };
 
 

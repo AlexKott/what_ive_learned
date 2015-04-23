@@ -11,8 +11,18 @@ var CreateEvent = function() {
     it needs to get configured.
     This uses a customised version of the ColorPicker
   */
-  ColorPicker.prototype.configColors('colorListCat', true, ['rgb(120,130,140)', '#99eeff', 'rgb(180,200,50)', 'rgb(10,210,180)']);
-  ColorPicker.prototype.configColors('colorListSub', true, ['rgb(120,130,140)', '#99eeff', 'rgb(180,200,50)', 'rgb(10,210,180)']);
+
+  var usedColors = [
+    'rgb(163,152,204)', 'rgb(86,68,153)', 'rgb(255,213,151)',
+    'rgb(204,175,152)', 'rgb(61,47,44)', 'rgb(173,136,40)', 'rgb(219,189,61)',
+    'rgb(61,72,35)', 'rgb(131,160,78)', 'rgb(245,237,216)',
+    'rgb(182,10,20)', 'rgb(244,208,20)', 'rgb(32,32,30)',
+    'rgb(197,90,28)', 'rgb(191,70,66)', 'rgb(191,0,122)',
+    'rgb(167,132,16)', 'rgb(116,27,21)', 
+    ];
+
+  ColorPicker.prototype.configColors('colorListCat', true, usedColors);
+  ColorPicker.prototype.configColors('colorListSub', true, usedColors);
 
   this.states = ['settingCat', 'settingSub', 'settingText', 'done', 'addingCat', 'addingSub'];
   this.currentState = 0;

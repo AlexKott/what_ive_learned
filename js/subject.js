@@ -1,7 +1,10 @@
-var categories = require('./content/categories.js');
+var dataControl = require('./data-control.js');
 
 var subject = {
   addNewSubject: function(category, subject, fields) {
+
+    var categories = dataControl.categories;
+
     if(categories[category] === undefined) {
       throw new Error('Category does not exist!');
     }
@@ -10,13 +13,14 @@ var subject = {
     }
     else {
       categories[category].subjects[subject] = fields;
+      dataControl.saveToJson('categories');
     }
   },
 
   getSubList: function(category) {
     var subs = [];
 
-    for (var sub in categories[category].subjects) {
+    for (var sub in dataControl.categories[category].subjects) {
       subs.push(sub);
     }
 

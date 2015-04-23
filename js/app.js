@@ -2,10 +2,13 @@
 require('../node_modules/tocca/Tocca.js');
 
 var Router = require('./router.js'),
-    uiQuery = require('./ui-query.js');
+    uiQuery = require('./ui-query.js'),
+    dataControl = require('./data-control.js');
 
 var app = {
   initialise: function() {
+    dataControl.getFromJson('categories');
+    dataControl.getFromJson('events');
     /*
       Loads user cache and categories.json.
       Initalises the Router.
