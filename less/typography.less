@@ -9,30 +9,64 @@ h1, h2, h3, h4, h5, h6 {
   text-align: center;
 }
 
-
-input, textarea {
-  font-size: 22px;
-}
-
 .header {
   span.header-date {
-    font-size: 16px;
+    font-size:1.125rem;
+    @media screen and (min-width:420px) {
+      font-size: 1.25rem;
+    }
   }
   span.header-cat {
-    font-size: 22px;
+    font-size: 1.25rem;
+    @media screen and (min-width:420px) {
+      font-size: 1.45rem;
+    }
   }
   span.header-sub {
-    font-size: 18px;
+    font-size: 1.25rem;
+    @media screen and (min-width:420px) {
+      font-size: 1.45rem;
+    }
+  }
+}
+.container {
+  input, textarea {
+    font-size:1.25rem;
+    @media screen and (min-width:420px) {
+      font-size: 2rem;
+    }
+  }
+  ul {
+    font-size: 1.75rem;
+    >li {
+      margin-bottom: 0.25rem;
+      text-align: center;
+    }
+  }
+  p {
+    font-size: 1.125rem;
+    @media screen and (min-width:500px) and (max-aspect-ratio:5/6) {
+      font-size: 1.25rem;
+    }
   }
 }
 
-ul {
-  margin: 0;
-  padding: 0;
-  text-align: center;
-  list-style-type: none;
-  font-size: 28px;
-  >li {
-    margin-bottom: 10px;
+
+.footer {
+  h4 {
+    font-size: 1.25rem;
+    margin-top: 0.5rem;
+    @media screen and (min-width:420px) {
+      font-size: 1.45rem;
+      margin-top: 1rem;
+    }
+  }
+
+  p {
+    margin: 0;
+    font-size:1.125rem;
+    @media screen and (min-width:420px) {
+      font-size: 1.25rem;
+    }
   }
 }

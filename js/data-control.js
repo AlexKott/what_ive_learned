@@ -30,8 +30,6 @@ var dataControl = {
       if (xhr.readyState === 4 && xhr.status === 200) {
         newData = JSON.parse(xhr.responseText);
         self[fileName] = newData;
-
-        setTimeout(function() { console.log(self); }, 0 );
       }
     };
     xhr.send();

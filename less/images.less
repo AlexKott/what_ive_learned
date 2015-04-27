@@ -11,11 +11,11 @@
 .line {
   &.bottom {
     background: url('svg/line-bottom.svg') no-repeat bottom;
-    background-size: cover;
+    background-size: contain;
   }
   &.top {
-    background: url('svg/line-top.svg') no-repeat center;
-    background-size: cover;
+    background: url('svg/line-top.svg') no-repeat top;
+    background-size: contain;
   }
 }
 
@@ -34,10 +34,10 @@ button {
   }
   &.milestone {
     background: url('svg/button-milestone.svg') no-repeat center;
-    background-size: cover;
+    background-size: contain;
     &.active {
       background: url('svg/milestone-badge.svg') no-repeat center;
-      background-size: cover;
+      background-size: contain;
     }
   }
   &.add{
@@ -55,7 +55,7 @@ button {
 }
 
 .show-first-event {
-  background: url('svg/line-vertical.svg') no-repeat 2vw;
+  background: url('svg/line-vertical.svg') no-repeat left;
   background-size: contain;
 }
 .milestone-badge {

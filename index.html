@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta name="viewport" content="minimal-ui, initial-scale=1, maximum-scale=1">
+  <meta name="viewport" content="minimal-ui, width=device-width, height=device-height, initial-scale=1, maximum-scale=1">
   <link href="http://fonts.googleapis.com/css?family=Nothing+You+Could+Do" rel="stylesheet" type="text/css">
   <link href="style.css" rel="stylesheet" type="text/css">
   <title>What I've Learned</title>
@@ -19,14 +19,14 @@
 </div>
 
 <div id="new-event" class="page" style="display:none">
-  <div class="header">
+  <div class="header line bottom">
     <a href="#"><div class="lightbulb"></div></a>
     <div class="current">
       <span id="current-date" class="header-date"></span>
       <span id="current-category" class="header-cat" style="display:none"></span>
       <span id="current-subject" class="header-sub" style="display:none"></span>
-      <div class="line bottom"></div>
     </div>
+    <div class="header-fill"></div>
   </div>
   <div class="container">
 
@@ -35,7 +35,7 @@
     </div>
 
     <div id="new-final" style="display:none">
-      <textarea id="new-description"></textarea>
+      <textarea id="new-description" class="line input" placeholder="Description for the event"></textarea>
     </div>
 
     <div id="new-submit-done" style="display:none">
@@ -43,14 +43,13 @@
     </div>
 
     <div id="add-form" style="display:none">
-      <span>Enter a title</span>
-      <input type="text" id="add-title"><br>
+      <input type="text" id="add-title" class="line input" placeholder="Enter a title"><br>
       <div id="add-color" class="colorpicker-list"></div>
     </div>
 
 
   </div>
-  <div class="buttons">
+  <div class="footer buttons line top">
     <button id="new-add" class="add" style="display:none"></button>
     <button id="new-submit" class="submit" disabled="true" style="display:none"></button>
     <button id="new-milestone" class="milestone" style="display:none"></button>
@@ -61,7 +60,7 @@
 </div> <!-- new event -->
 
 <div id="view-events" class="page" style="display:none">
-  <div class="header">
+  <div class="header line bottom">
     <a href="#"><div class="lightbulb"></div></a>
     <div class="current">
       <h2 class="header-date"></h2>
@@ -69,10 +68,9 @@
     </div>
   </div>
   <div id="present-events" class="container"></div>
-  <div id="view-footer" class="footer">
-    <div class="line top"></div>
-    <h4 class="view-cat-sub"></h4>
-    <p class="view-description"></p>
+  <div id="view-footer" class="footer line top">
+    <div class="footer-text"></div>
+    <div class="milestone-badge" style="display:none"></div>
   </div>
 </div> <!-- wrapper -->
 

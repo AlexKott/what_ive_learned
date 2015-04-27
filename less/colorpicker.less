@@ -6,8 +6,12 @@
   width: 86vw;
 }
 .colorpicker-field {
-  width: 13vw;
-  height: 13vw;
+  width: 2.25rem;
+  height: 2.25rem;
+  @media screen and (min-width:420px) {
+    width: 3rem;
+    height: 3rem;
+  }
   cursor: pointer;
   box-sizing: border-box;
   &.active-color {

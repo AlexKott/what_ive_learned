@@ -18,7 +18,7 @@ var CreateEvent = function() {
     'rgb(61,72,35)', 'rgb(131,160,78)', 'rgb(245,237,216)',
     'rgb(182,10,20)', 'rgb(244,208,20)', 'rgb(32,32,30)',
     'rgb(197,90,28)', 'rgb(191,70,66)', 'rgb(191,0,122)',
-    'rgb(167,132,16)', 'rgb(116,27,21)', 
+    'rgb(167,132,16)', 'rgb(116,27,21)',
     ];
 
   ColorPicker.prototype.configColors('colorListCat', true, usedColors);
@@ -37,7 +37,7 @@ var CreateEvent = function() {
         monthName = months[date.getMonth()];
     this.data.today = LearnEvent.prototype.transformDate(date);
 
-    document.querySelector('#current-date').innerText = dayName + ', ' + date.getDate() + '. ' + monthName + ' ' + date.getFullYear();
+    document.querySelector('#current-date').innerText = dayName + ', ' + date.getDate() + '. ' + monthName;
   };
 
   this.fillContainer = function() {

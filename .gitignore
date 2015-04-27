@@ -2,3 +2,5 @@ node_modules/
 bundle.js
 style.css
 build/
+categories.json
+events.json

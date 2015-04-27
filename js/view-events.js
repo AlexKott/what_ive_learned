@@ -66,8 +66,8 @@ var ViewEvent = function() {
 
   this.applyColors = function(el, cat, sub) {
     var paths = el.querySelectorAll('path'),
-        strokeColor = this.categories[cat].color,
-        fillColor = this.categories[cat].subjects[sub].color;
+        strokeColor = this.categories[cat].subjects[sub].color,
+        fillColor = this.categories[cat].color;
     paths[0].style.fill = 'rgb(' + fillColor.r + ',' + fillColor.g + ',' + fillColor.b + ')';
     paths[1].style.fill = 'rgb(' + strokeColor.r + ',' + strokeColor.g + ',' + strokeColor.b + ')';
     return el;
@@ -75,7 +75,7 @@ var ViewEvent = function() {
 
   this.setActiveEvent = function(el) {
     var footer = document.querySelector('#view-footer'),
-        oldActive, date, val, ev;
+        oldActive, date, val, ev, milestone, footerText, ftHead, ftDesc;
 
     // NOTE the single = is correct here!
     if (oldActive = document.querySelector('.show-single-event.active')) {
@@ -83,22 +83,27 @@ var ViewEvent = function() {
     }
     el.className += ' active';
 
-    if (footer.className.indexOf('milestone-badge')) {
-      footer.className = footer.className.replace(' milestone-badge', '');
-    }
-
     date = el.dataset.index.slice(0, 8);
     val = el.dataset.index.slice(8);
 
     ev = this.events[date][val];
 
+    milestone = footer.querySelector('.milestone-badge');
     if (ev.isMilestone) {
-      footer.className += ' milestone-badge';
+      milestone.style.display = 'block';
+    }
+    else {
+      milestone.style.display = 'none';
     }
 
-    footer.querySelector('.view-cat-sub').innerText = ev.category + ' - ' + ev.subject;
-    footer.querySelector('.view-description').innerText = ev.description;
-
+    footerText = footer.querySelector('.footer-text');
+    footerText.innerHTML = '';
+    ftHead = document.createElement('H4');
+    ftHead.innerHTML = ev.category + ' - ' + ev.subject;
+    ftDesc = document.createElement('P');
+    ftDesc.innerHTML = ev.description;
+    footerText.appendChild(ftHead);
+    footerText.appendChild(ftDesc);
   };
 
   this.setupEventListener = function() {
@@ -144,7 +149,7 @@ ViewEvent.prototype.resetData = function() {
   Array.prototype.forEach.call(footer.childNodes, function(node) {
     node.innerHTML = '';
   });
-  footer.className = 'footer';
+  footer.className = 'footer line top';
 
 };
 
