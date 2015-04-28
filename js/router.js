@@ -46,7 +46,7 @@ var Router = function() {
 
     for (var i = 0; i < pagesLength; i++) {
       if (pages[i].id === path) {
-        pages[i].style.display = 'flex';
+        pages[i].removeAttribute('style');
       }
       else {
         pages[i].style.display = 'none';
