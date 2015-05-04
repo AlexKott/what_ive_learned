@@ -13,7 +13,7 @@ var category = {
     categories[title] = fields;
     categories[title].subjects = {};
 
-  dataControl.saveToJson('categories');
+  //dataControl.saveToJson('categories');
   },
 
   getCatList: function() {

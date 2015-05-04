@@ -13,6 +13,7 @@ body {
 
 #wrapper {
   width: 90vw;
+  max-width: 800px;
   height: 100%;
   margin: auto;
 }
@@ -31,6 +32,7 @@ body {
   margin-top: 0.25rem;
   >a {
     flex-basis: 15vw;
+    max-width: 80px;
     align-self: center;
     padding-bottom: 0.5rem;
   }
@@ -48,6 +50,8 @@ body {
   .lightbulb {
     width: 15vw;
     height: 15vw;
+    max-width: 80px;
+    max-height: 80px;
   }
 }
 
@@ -64,15 +68,20 @@ body {
     height: 91%;
     width: 100%;
     position: absolute;
-    padding: 4% 0;
+    padding: 4% 0 0 0;
+    @media screen and (min-width: 36rem) {
+      padding: 2% 0 0 0;
+    }
     >ul {
       min-height: 100%;
       margin: 0;
       padding: 0;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       list-style-type: none;
+      >li {
+        cursor: pointer;
+      }
     }
   }
 }
@@ -85,6 +94,10 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    >button {
+      max-height: 100px;
+      max-width: 100px;
+    }
   }
 }
 

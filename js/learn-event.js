@@ -20,7 +20,7 @@ var LearnEvent = function(date, fields) {
 
   events[date].push(this.fields);
 
-  dataControl.saveToJson('events');
+  //dataControl.saveToJson('events');
 
 };
 

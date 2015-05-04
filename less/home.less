@@ -10,6 +10,12 @@
   .container {
     height: 76vh;
     overflow: hidden;
+    max-height: initial;
+    @media screen and (min-aspect-ratio:5/4) {
+      display: flex;
+      justify-content: center;
+      padding-top:3vh;
+    }
     button {
       height: 30vh;
       width: 30vh;
@@ -20,6 +26,16 @@
       position:relative;
       left: 50%;
       transform: translate(-50%, 0);
+      @media screen and (min-aspect-ratio:5/4) {
+        display: inline-block;
+        left: auto;
+        transform: initial;
+        height: 30vw;
+        width: 30vw;
+        &:first-child {
+          margin-right: 5vw;
+        }
+      }
     }
   }
 }

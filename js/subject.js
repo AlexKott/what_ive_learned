@@ -13,7 +13,7 @@ var subject = {
     }
     else {
       categories[category].subjects[subject] = fields;
-      dataControl.saveToJson('categories');
+      //dataControl.saveToJson('categories');
     }
   },
 
